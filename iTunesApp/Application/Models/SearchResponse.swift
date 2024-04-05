@@ -7,6 +7,6 @@
 
 import Foundation
 
-struct SearchResponse: Decodable {
-  let result: [StoreItem]
+struct SearchResponse<Response: Decodable>: Decodable {
+  let results: [Response]
 }

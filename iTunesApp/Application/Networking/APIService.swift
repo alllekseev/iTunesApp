@@ -9,9 +9,9 @@ import Foundation
 
 struct iTunesSearchService: APIRequest {
 
-  typealias Response = SearchResponse
+  typealias Response = StoreItem
 
   var path: Endpoints { .search }
 
-  var queryItems: [URLQueryItem]
+  var queryItems: [URLQueryItem] = []
 }

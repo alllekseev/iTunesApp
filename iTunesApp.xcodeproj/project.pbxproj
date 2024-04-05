@@ -20,6 +20,8 @@
 		2AA024E62BC0336D00E76693 /* Endpoints.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA024E52BC0336D00E76693 /* Endpoints.swift */; };
 		2AA024E82BC03F5700E76693 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA024E72BC03F5700E76693 /* APIService.swift */; };
 		2AA024EA2BC03FF200E76693 /* SearchResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA024E92BC03FF200E76693 /* SearchResponse.swift */; };
+		2AA024EC2BC0610200E76693 /* ItemCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA024EB2BC0610200E76693 /* ItemCollectionViewCell.swift */; };
+		2AA024F22BC0639800E76693 /* UIImage+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA024F12BC0639800E76693 /* UIImage+Extension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +40,8 @@
 		2AA024E52BC0336D00E76693 /* Endpoints.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Endpoints.swift; sourceTree = "<group>"; };
 		2AA024E72BC03F5700E76693 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 		2AA024E92BC03FF200E76693 /* SearchResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResponse.swift; sourceTree = "<group>"; };
+		2AA024EB2BC0610200E76693 /* ItemCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemCollectionViewCell.swift; sourceTree = "<group>"; };
+		2AA024F12BC0639800E76693 /* UIImage+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+Extension.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,11 +112,12 @@
 		2AA024DA2BBFCCF900E76693 /* Application */ = {
 			isa = PBXGroup;
 			children = (
+				2AA024F02BC0638900E76693 /* Extensions */,
+				2AA024ED2BC0612C00E76693 /* Protocols */,
 				2AA024E22BC032C800E76693 /* Networking */,
 				2AA024DE2BBFD32B00E76693 /* iTunesList */,
 				2AA024DB2BBFCD4100E76693 /* Models */,
 				2AA024C72BBFC29200E76693 /* Main.storyboard */,
-				2AA024C52BBFC29200E76693 /* StoreItemContainerViewController.swift */,
 			);
 			path = Application;
 			sourceTree = "<group>";
@@ -130,6 +135,8 @@
 		2AA024DE2BBFD32B00E76693 /* iTunesList */ = {
 			isa = PBXGroup;
 			children = (
+				2AA024C52BBFC29200E76693 /* StoreItemContainerViewController.swift */,
+				2AA024EB2BC0610200E76693 /* ItemCollectionViewCell.swift */,
 			);
 			path = iTunesList;
 			sourceTree = "<group>";
@@ -142,6 +149,21 @@
 				2AA024E72BC03F5700E76693 /* APIService.swift */,
 			);
 			path = Networking;
+			sourceTree = "<group>";
+		};
+		2AA024ED2BC0612C00E76693 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		2AA024F02BC0638900E76693 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				2AA024F12BC0639800E76693 /* UIImage+Extension.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -218,9 +240,11 @@
 			files = (
 				2AA024DD2BBFCD5D00E76693 /* SearchScope.swift in Sources */,
 				2AA024E12BC0117000E76693 /* StoreItem.swift in Sources */,
+				2AA024F22BC0639800E76693 /* UIImage+Extension.swift in Sources */,
 				2AA024C62BBFC29200E76693 /* StoreItemContainerViewController.swift in Sources */,
 				2AA024E62BC0336D00E76693 /* Endpoints.swift in Sources */,
 				2AA024C22BBFC29200E76693 /* AppDelegate.swift in Sources */,
+				2AA024EC2BC0610200E76693 /* ItemCollectionViewCell.swift in Sources */,
 				2AA024E42BC032E500E76693 /* APIRequest.swift in Sources */,
 				2AA024E82BC03F5700E76693 /* APIService.swift in Sources */,
 				2AA024C42BBFC29200E76693 /* SceneDelegate.swift in Sources */,

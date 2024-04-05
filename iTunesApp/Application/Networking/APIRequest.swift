@@ -7,9 +7,10 @@
 
 import Foundation
 
-enum APIRequestError: Error {
+enum APIRequestError: Error, LocalizedError {
   case itemsNotFound
   case requestFailed
+  case imageDataMissing
   case notValidURL
 }
 
@@ -44,7 +45,7 @@ extension APIRequest {
 
 extension APIRequest where Response: Decodable {
 
-  func send() async throws -> Response {
+  func fetchItems() async throws -> [Response] {
     let (data, response) = try await URLSession.shared.data(for: request)
 
     guard let httpResponse = response as? HTTPURLResponse,
@@ -52,8 +53,8 @@ extension APIRequest where Response: Decodable {
       throw APIRequestError.itemsNotFound
     }
 
-    let decoded = try JSONDecoder().decode(Response.self, from: data)
+    let decoded = try JSONDecoder().decode(SearchResponse<Response>.self, from: data)
 
-    return decoded
+    return decoded.results
   }
 }
