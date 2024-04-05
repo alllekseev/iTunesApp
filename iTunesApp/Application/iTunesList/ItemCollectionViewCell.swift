@@ -14,25 +14,25 @@ final class ItemCollectionViewCell: UICollectionViewCell {
   private var stackView: UIStackView = {
     let stackView = UIStackView()
     stackView.axis = .vertical
+    stackView.alignment = .leading
+    stackView.distribution = .fill
     stackView.spacing = 4
     return stackView
   }()
 
   private var itemImageView: UIImageView = {
     let imageView = UIImageView()
-
+    imageView.contentMode = .scaleAspectFill
     return imageView
   }()
 
   private var titleLabel: UILabel = {
     let label = UILabel()
-    label.contentMode = .left
     return label
   }()
 
   var detailLabel: UILabel = {
     let label = UILabel()
-    label.contentMode = .left
     return label
   }()
 
@@ -64,22 +64,23 @@ final class ItemCollectionViewCell: UICollectionViewCell {
   }
 }
 
-extension ItemCollectionViewCell {
-  func prepareUI() {
-    setupViews()
-    configureConstraints()
-  }
-
+extension ItemCollectionViewCell: PrepareView {
   func setupViews() {
+    stackView.addArrangedSubview(itemImageView)
+    stackView.addArrangedSubview(titleLabel)
+    stackView.addArrangedSubview(detailLabel)
+    setupView(stackView)
 
+    backgroundColor = .gray.withAlphaComponent(0.4)
   }
 
   func configureConstraints() {
     NSLayoutConstraint.activate([
-      stackView.topAnchor.constraint(equalTo: topAnchor),
-      stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
-      stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
-      stackView.trailingAnchor.constraint(equalTo: trailingAnchor)
+
+      stackView.topAnchor.constraint(equalTo: topAnchor, constant: 8),
+      stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
+      stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8),
+      stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8)
     ])
   }
 }

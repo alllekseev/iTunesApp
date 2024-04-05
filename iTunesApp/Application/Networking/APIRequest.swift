@@ -19,15 +19,15 @@ protocol APIRequest {
 
   var path: Endpoints { get }
   var queryItems: [URLQueryItem] { get }
-  var request: URLRequest { get }
+  var request: URLRequest? { get }
 }
 
 extension APIRequest {
-  var host: String { "" }
+  var host: String { "itunes.apple.com" }
 }
 
 extension APIRequest {
-  var request: URLRequest {
+  var request: URLRequest? {
     var components = URLComponents()
 
     components.scheme = "https"
@@ -37,6 +37,7 @@ extension APIRequest {
 
     guard let url = components.url else {
       print(APIRequestError.notValidURL)
+      return nil
     }
 
     return URLRequest(url: url)
@@ -46,6 +47,9 @@ extension APIRequest {
 extension APIRequest where Response: Decodable {
 
   func fetchItems() async throws -> [Response] {
+    guard let request = request else {
+      throw APIRequestError.notValidURL
+    }
     let (data, response) = try await URLSession.shared.data(for: request)
 
     guard let httpResponse = response as? HTTPURLResponse,
