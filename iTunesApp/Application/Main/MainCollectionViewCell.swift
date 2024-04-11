@@ -1,5 +1,5 @@
 //
-//  ItemCollectionViewCell.swift
+//  MainCollectionViewCell.swift
 //  iTunesApp
 //
 //  Created by Олег Алексеев on 05.04.2024.
@@ -7,9 +7,9 @@
 
 import UIKit
 
-final class ItemCollectionViewCell: UICollectionViewCell {
+final class MainCollectionViewCell: UICollectionViewCell, ItemDisplaing {
 
-  static let ID = String(describing: ItemCollectionViewCell.self)
+  static let ID = String(describing: MainCollectionViewCell.self)
 
   private var stackView: UIStackView = {
     let stackView = UIStackView()
@@ -20,13 +20,13 @@ final class ItemCollectionViewCell: UICollectionViewCell {
     return stackView
   }()
 
-  private var itemImageView: UIImageView = {
+  var itemImageView: UIImageView = {
     let imageView = UIImageView()
     imageView.contentMode = .scaleAspectFill
     return imageView
   }()
 
-  private var titleLabel: UILabel = {
+  var titleLabel: UILabel = {
     let label = UILabel()
     return label
   }()
@@ -46,25 +46,25 @@ final class ItemCollectionViewCell: UICollectionViewCell {
   }
   
 
-  func configure(for item: StoreItem) async {
-    titleLabel.text = item.name
-    detailLabel.text = item.artist
-    itemImageView.image = UIImage(systemName: "photo")
-
-    do {
-      let image = try await UIImage().fetchImage(from: item.artworkURL)
-
-      self.itemImageView.image = image
-    } catch let error as NSError where error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled {
-      // ignore cancelation errors
-    } catch {
-      self.itemImageView.image = UIImage(systemName: "photo")
-      print("Error fetching image: \(error)")
-    }
-  }
+//  func configure(for item: StoreItem) async {
+//    titleLabel.text = item.name
+//    detailLabel.text = item.artist
+//    itemImageView.image = UIImage(systemName: "photo")
+//
+//    do {
+//      let image = try await UIImage().fetchImage(from: item.artworkURL)
+//
+//      self.itemImageView.image = image
+//    } catch let error as NSError where error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled {
+//      // ignore cancelation errors
+//    } catch {
+//      self.itemImageView.image = UIImage(systemName: "photo")
+//      print("Error fetching image: \(error)")
+//    }
+//  }
 }
 
-extension ItemCollectionViewCell: PrepareView {
+extension MainCollectionViewCell: PrepareView {
   func setupViews() {
     stackView.addArrangedSubview(itemImageView)
     stackView.addArrangedSubview(titleLabel)

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import UIKit
 
 enum APIRequestError: Error, LocalizedError {
   case itemsNotFound
@@ -36,7 +37,6 @@ extension APIRequest {
     components.queryItems = queryItems
 
     guard let url = components.url else {
-      print(APIRequestError.notValidURL)
       return nil
     }
 

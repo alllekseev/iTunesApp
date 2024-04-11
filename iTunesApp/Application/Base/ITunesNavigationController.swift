@@ -18,7 +18,7 @@ class ITunesNavigationController: UINavigationController {
   private func config() {
     //    navigationBar.isTranslucent = false
     let layout = UICollectionViewLayout()
-    let controllers = [StoreItemContainerViewController(collectionViewLayout: layout)]
+    let controllers = [MainCollectionViewController(collectionViewLayout: layout)]
 
     setViewControllers(controllers, animated: false)
   }
