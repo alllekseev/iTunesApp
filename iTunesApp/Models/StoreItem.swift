@@ -44,11 +44,10 @@ extension StoreItem: Decodable {
 
     let additionalContainer = try decoder.container(keyedBy: AdditionalKeys.self)
     name = (try? container.decode(String.self, forKey: .name))
-        ?? (try? additionalContainer.decode(String.self, forKey: .collectionName))
-        ?? "--"
+        ?? (try? additionalContainer.decode(String.self, forKey: .collectionName)) ?? ""
     description = (try? container.decode(String.self, forKey: .description))
         ?? (try? additionalContainer.decode(String.self, forKey: .description))
-        ?? "--"
+        ?? ""
   }
 }
 
