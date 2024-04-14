@@ -8,9 +8,13 @@
 import UIKit
 
 extension UIImage {
-  static func fetchImage(from url: URL) async throws -> UIImage {
+  static func fetchImage(from url: URL?) async throws -> UIImage {
+
+    guard let url = url else {
+      throw APIRequestError.imageURLNotFound
+    }
+
     let (data, response) = try await URLSession.shared.data(from: url)
-//    let placeholderImage = UIImage(systemName: "photo")!
 
     guard let httpResponse = response as? HTTPURLResponse,
           httpResponse.statusCode == 200 else {

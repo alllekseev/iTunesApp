@@ -7,6 +7,7 @@
 
 import UIKit
 
+// TODO: create initializer
 class MainCollectionViewController: UICollectionViewController {
 
   // MARK: - Typealiases
@@ -16,9 +17,11 @@ class MainCollectionViewController: UICollectionViewController {
 
   // MARK: - Properties
 
+
   var searchServise = iTunesSearchService()
+  var searchRepositiry: SearchRepository!
   var searchController: UISearchController!
-  let searchCollectionViewController = SearchCollectionViewController(collectionViewLayout: UICollectionViewLayout())
+//  let searchCollectionViewController = SearchCollectionViewController(collectionViewLayout: UICollectionViewLayout())
 
   var dataSource: DataSource!
 
@@ -45,13 +48,16 @@ class MainCollectionViewController: UICollectionViewController {
     )
     configureDataSource()
     configureSearchController()
+    searchRepositiry = SearchRepository(searchService: searchServise)
+    searchRepositiry.delegate = self
   }
 
   // MARK: - Configure SearchController
 
   private func configureSearchController() {
-    searchController = UISearchController(searchResultsController: searchCollectionViewController)
-    searchController.searchResultsUpdater = self
+//    searchController = UISearchController(searchResultsController: searchCollectionViewController)
+    searchController = UISearchController()
+//    searchController.searchResultsUpdater = self
     searchController.searchBar.autocapitalizationType = .none
     searchController.searchBar.delegate = self
     searchController.obscuresBackgroundDuringPresentation = true // TODO: change on true
@@ -118,15 +124,60 @@ class MainCollectionViewController: UICollectionViewController {
   }
 }
 
+extension MainCollectionViewController {
+  @objc func fetchItems() {
+    let mediaType = queryOptions[searchController.searchBar.selectedScopeButtonIndex]
+    let searchTerm = searchController.searchBar.text ?? ""
+
+    self.searchTask?.cancel()
+    self.searchTask = Task {
+      if !searchTerm.isEmpty {
+        let queryItems = QueryItems(term: searchTerm, mediaType: mediaType)
+        await searchRepositiry.fetchMatchingItems(queryItems: queryItems)
+      }
+    }
+  }
+}
+
 extension MainCollectionViewController: UISearchBarDelegate {
   func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+    fetchItems()
     searchBar.resignFirstResponder()
   }
 
-  func searchBar(
-    _ searchBar: UISearchBar,
-    selectedScopeButtonIndexDidChange selectedScope: Int
-  ) {
-    updateSearchResults(for: searchController)
+//  func searchBar(
+//    _ searchBar: UISearchBar,
+//    selectedScopeButtonIndexDidChange selectedScope: Int
+//  ) {
+//    updateSearchResults(for: searchController)
+//  }
+}
+
+extension MainCollectionViewController: SearchRepositoryDelegate {
+  func searchItemsDidFetch(_ items: [StoreItem]) {
+    self.items = items
+    dataSource.apply(itemSnapshot, animatingDifferences: true)
+  }
+
+  func searchFetchFailed(with error: Error) {
+    switch error {
+    case APIRequestError.itemsNotFound:
+      print("Items not found.")
+      // Дополнительные действия при необходимости
+    case APIRequestError.requestFailed:
+      print("Request failed.")
+      // Дополнительные действия при необходимости
+    case APIRequestError.imageDataMissing:
+      print("Image data is missing.")
+      // Дополнительные действия при необходимости
+    case APIRequestError.notValidURL:
+      print("URL is not valid.")
+      // Дополнительные действия при необходимости
+    case APIRequestError.imageURLNotFound:
+      print("Image URL not found.")
+      // Дополнительные действия при необходимости
+    default:
+      print("Unknown error occurred: \(error.localizedDescription)")
+    }
   }
 }

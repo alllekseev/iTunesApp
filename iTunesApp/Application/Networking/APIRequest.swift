@@ -13,6 +13,7 @@ enum APIRequestError: Error, LocalizedError {
   case requestFailed
   case imageDataMissing
   case notValidURL
+  case imageURLNotFound
 }
 
 protocol APIRequest {

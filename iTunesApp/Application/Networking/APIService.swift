@@ -7,6 +7,7 @@
 
 import Foundation
 
+// TODO: rename struct
 struct iTunesSearchService: APIRequest {
 
   typealias Response = StoreItem

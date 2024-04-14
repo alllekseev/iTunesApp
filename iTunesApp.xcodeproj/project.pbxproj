@@ -9,8 +9,7 @@
 /* Begin PBXBuildFile section */
 		2A408C842BC422E700FD469C /* APIResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A408C832BC422E700FD469C /* APIResource.swift */; };
 		2A42F7ED2BC6A7590086D6F9 /* StoreAPIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A42F7EC2BC6A7590086D6F9 /* StoreAPIError.swift */; };
-		2A7BC42A2BC140D100022ACC /* SearchTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A7BC4292BC140D100022ACC /* SearchTableViewController.swift */; };
-		2A7BC42C2BC1454600022ACC /* SearchTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A7BC42B2BC1454600022ACC /* SearchTableViewCell.swift */; };
+		2A7BC42A2BC140D100022ACC /* SearchCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A7BC4292BC140D100022ACC /* SearchCollectionViewController.swift */; };
 		2A7BC42F2BC1A69B00022ACC /* MainCollectionViewController+Updating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A7BC42E2BC1A69B00022ACC /* MainCollectionViewController+Updating.swift */; };
 		2AA024C22BBFC29200E76693 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA024C12BBFC29200E76693 /* AppDelegate.swift */; };
 		2AA024C42BBFC29200E76693 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA024C32BBFC29200E76693 /* SceneDelegate.swift */; };
@@ -29,13 +28,16 @@
 		2AA024F42BC096E500E76693 /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA024F32BC096E500E76693 /* UIView+Extensions.swift */; };
 		2AA024F62BC097FC00E76693 /* PrepareView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA024F52BC097FC00E76693 /* PrepareView.swift */; };
 		2AA024FC2BC0A6ED00E76693 /* ITunesNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA024FB2BC0A6ED00E76693 /* ITunesNavigationController.swift */; };
+		2AB268082BC9560900614982 /* CollectionViewControllerBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB268072BC9560900614982 /* CollectionViewControllerBuilder.swift */; };
+		2AB2680A2BC9565100614982 /* ItemDisplaying.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB268092BC9565100614982 /* ItemDisplaying.swift */; };
+		2AB2680C2BC956AD00614982 /* SearchCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB2680B2BC956AD00614982 /* SearchCollectionViewCell.swift */; };
+		2AB2680E2BC9775300614982 /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB2680D2BC9775300614982 /* LoadingViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		2A408C832BC422E700FD469C /* APIResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIResource.swift; sourceTree = "<group>"; };
 		2A42F7EC2BC6A7590086D6F9 /* StoreAPIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreAPIError.swift; sourceTree = "<group>"; };
-		2A7BC4292BC140D100022ACC /* SearchTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewController.swift; sourceTree = "<group>"; };
-		2A7BC42B2BC1454600022ACC /* SearchTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTableViewCell.swift; sourceTree = "<group>"; };
+		2A7BC4292BC140D100022ACC /* SearchCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCollectionViewController.swift; sourceTree = "<group>"; };
 		2A7BC42E2BC1A69B00022ACC /* MainCollectionViewController+Updating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainCollectionViewController+Updating.swift"; sourceTree = "<group>"; };
 		2AA024BE2BBFC29200E76693 /* iTunesApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iTunesApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2AA024C12BBFC29200E76693 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -56,6 +58,10 @@
 		2AA024F32BC096E500E76693 /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
 		2AA024F52BC097FC00E76693 /* PrepareView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrepareView.swift; sourceTree = "<group>"; };
 		2AA024FB2BC0A6ED00E76693 /* ITunesNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ITunesNavigationController.swift; sourceTree = "<group>"; };
+		2AB268072BC9560900614982 /* CollectionViewControllerBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionViewControllerBuilder.swift; sourceTree = "<group>"; };
+		2AB268092BC9565100614982 /* ItemDisplaying.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDisplaying.swift; sourceTree = "<group>"; };
+		2AB2680B2BC956AD00614982 /* SearchCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCollectionViewCell.swift; sourceTree = "<group>"; };
+		2AB2680D2BC9775300614982 /* LoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,8 +78,8 @@
 		2A7BC4282BC1402100022ACC /* Search */ = {
 			isa = PBXGroup;
 			children = (
-				2A7BC4292BC140D100022ACC /* SearchTableViewController.swift */,
-				2A7BC42B2BC1454600022ACC /* SearchTableViewCell.swift */,
+				2A7BC4292BC140D100022ACC /* SearchCollectionViewController.swift */,
+				2AB2680B2BC956AD00614982 /* SearchCollectionViewCell.swift */,
 			);
 			path = Search;
 			sourceTree = "<group>";
@@ -82,6 +88,7 @@
 			isa = PBXGroup;
 			children = (
 				2AA024FB2BC0A6ED00E76693 /* ITunesNavigationController.swift */,
+				2AB2680D2BC9775300614982 /* LoadingViewController.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -190,6 +197,8 @@
 			isa = PBXGroup;
 			children = (
 				2AA024F52BC097FC00E76693 /* PrepareView.swift */,
+				2AB268072BC9560900614982 /* CollectionViewControllerBuilder.swift */,
+				2AB268092BC9565100614982 /* ItemDisplaying.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -276,21 +285,24 @@
 			files = (
 				2AA024DD2BBFCD5D00E76693 /* SearchScope.swift in Sources */,
 				2AA024E12BC0117000E76693 /* StoreItem.swift in Sources */,
+				2AB2680C2BC956AD00614982 /* SearchCollectionViewCell.swift in Sources */,
+				2AB268082BC9560900614982 /* CollectionViewControllerBuilder.swift in Sources */,
+				2AB2680A2BC9565100614982 /* ItemDisplaying.swift in Sources */,
 				2AA024F22BC0639800E76693 /* UIImage+Extension.swift in Sources */,
-				2A7BC42C2BC1454600022ACC /* SearchTableViewCell.swift in Sources */,
 				2A408C842BC422E700FD469C /* APIResource.swift in Sources */,
 				2A7BC42F2BC1A69B00022ACC /* MainCollectionViewController+Updating.swift in Sources */,
 				2AA024C62BBFC29200E76693 /* MainCollectionViewController.swift in Sources */,
 				2AA024E62BC0336D00E76693 /* Endpoints.swift in Sources */,
 				2A42F7ED2BC6A7590086D6F9 /* StoreAPIError.swift in Sources */,
 				2AA024F62BC097FC00E76693 /* PrepareView.swift in Sources */,
+				2AB2680E2BC9775300614982 /* LoadingViewController.swift in Sources */,
 				2AA024C22BBFC29200E76693 /* AppDelegate.swift in Sources */,
 				2AA024F42BC096E500E76693 /* UIView+Extensions.swift in Sources */,
 				2AA024EC2BC0610200E76693 /* MainCollectionViewCell.swift in Sources */,
 				2AA024FC2BC0A6ED00E76693 /* ITunesNavigationController.swift in Sources */,
 				2AA024E42BC032E500E76693 /* APIRequest.swift in Sources */,
 				2AA024E82BC03F5700E76693 /* APIService.swift in Sources */,
-				2A7BC42A2BC140D100022ACC /* SearchTableViewController.swift in Sources */,
+				2A7BC42A2BC140D100022ACC /* SearchCollectionViewController.swift in Sources */,
 				2AA024C42BBFC29200E76693 /* SceneDelegate.swift in Sources */,
 				2AA024EA2BC03FF200E76693 /* SearchResponse.swift in Sources */,
 			);

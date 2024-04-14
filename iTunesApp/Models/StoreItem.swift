@@ -7,12 +7,13 @@
 
 import Foundation
 
+// TODO: don't show elements if some of the param is missed
 struct StoreItem: Hashable {
   let name: String
   let artist: String
   let kind: String
   let description: String
-  let artworkURL: URL
+  let artworkURL: URL?
   let trackId: Int?
   let collectionId: Int?
 
@@ -37,7 +38,7 @@ extension StoreItem: Decodable {
     let container = try decoder.container(keyedBy: CodingKeys.self)
     artist = try container.decode(String.self, forKey: .artist)
     kind = (try? container.decode(String.self, forKey: .kind)) ?? ""
-    artworkURL = try container.decode(URL.self, forKey: .artworkURL)
+    artworkURL = try? container.decode(URL.self, forKey: .artworkURL)
     trackId = try? container.decode(Int.self, forKey: .trackId)
     collectionId = try? container.decode(Int.self, forKey: .collectionId)
 
@@ -48,5 +49,21 @@ extension StoreItem: Decodable {
     description = (try? container.decode(String.self, forKey: .description))
         ?? (try? additionalContainer.decode(String.self, forKey: .description))
         ?? "--"
+  }
+}
+
+extension Data {
+  func prettyPrintedJSONString() {
+    guard let jsonObject = try? JSONSerialization.jsonObject(
+      with: self,
+      options: []
+    ),
+          let jsonData = try? JSONSerialization.data(withJSONObject: jsonObject, options: [.prettyPrinted]),
+          let prettyJSONString = String(data: jsonData, encoding: .utf8) else {
+      print("Failed to read JSON Object")
+      return
+    }
+    print(prettyJSONString)
+
   }
 }

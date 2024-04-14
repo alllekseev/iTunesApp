@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class MainCollectionViewCell: UICollectionViewCell, ItemDisplaing {
+final class MainCollectionViewCell: UICollectionViewCell, ItemDisplaying {
 
   static let ID = String(describing: MainCollectionViewCell.self)
 
