@@ -22,11 +22,15 @@ enum SearchScope: CaseIterable {
 
   var mediaType: String {
     switch self {
-    case .all: return "movie, album, allArtist, podcast, musicVideo, mix, audiobook, tvSeason, allTrack"
-    case .movies: return "movie"
-    case .music: return "music"
-    case .apps: return "software"
-    case .books: return "ebooks"
+    case .all:
+      return "movie, album, allArtist, podcast, musicVideo, mix, audiobook, tvSeason, allTrack"
+    case .movies:
+      return "movieArtist, movie"
+    case .music:
+      return "musicArtist, musicTrack, album, musicVideo, mix, song"
+    case .apps:
+      return "software"
+    case .books: return "ebook"
     }
   }
 }

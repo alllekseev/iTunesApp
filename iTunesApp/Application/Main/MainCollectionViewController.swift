@@ -10,6 +10,8 @@ import UIKit
 // TODO: create initializer
 class MainCollectionViewController: UICollectionViewController {
 
+  let errorViewController = ErrorView()
+
   // MARK: - Typealiases
 
   typealias DataSource = UICollectionViewDiffableDataSource<String, StoreItem>
@@ -43,7 +45,12 @@ class MainCollectionViewController: UICollectionViewController {
     )
     configureDataSource()
 
+    showEmptyScreen()
+
     searchController.searchRepository.addObserver(self)
+    searchController.searchTextHandler = {
+      self.showEmptyScreen()
+    }
   }
 
   // MARK: - Configure Layout
@@ -103,32 +110,68 @@ class MainCollectionViewController: UICollectionViewController {
 }
 
 extension MainCollectionViewController: SearchObserver {
+  
   func searchItemsDidFetch(_ items: [StoreItem]) {
     self.items = items
+
+    if self.items.isEmpty {
+      showErrorView(with: "Элементы не найдены")
+    } else {
+      hideErrorView()
+    }
+
     dataSource.apply(itemSnapshot, animatingDifferences: true)
   }
-  
-  func searchFetchFailed(with error: Error) {
-    switch error {
-    case APIRequestError.itemsNotFound:
-      print("Items not found.")
-      // Дополнительные действия при необходимости
-    case APIRequestError.requestFailed:
-      print("Request failed.")
-      // Дополнительные действия при необходимости
-    case APIRequestError.imageDataMissing:
-      print("Image data is missing.")
-      // Дополнительные действия при необходимости
-    case APIRequestError.notValidURL:
-      print("URL is not valid.")
-      // Дополнительные действия при необходимости
-    case APIRequestError.imageURLNotFound:
-      print("Image URL not found.")
-      // Дополнительные действия при необходимости
-    default:
-      print("Unknown error occurred: \(error.localizedDescription)")
+
+  func searchFetchFailed(with error: String) {
+    showErrorView(with: error)
+  }
+
+  func showErrorView(with error: String) {
+
+    var errorMessage = ErrorMessage()
+    errorMessage.message = error
+    errorViewController.configureController(errorMessage: errorMessage)
+
+    DispatchQueue.main.async {
+      self.view.addSubview(self.errorViewController.view)
+      self.addChild(self.errorViewController)
+      self.errorViewController.didMove(toParent: self)
     }
   }
-  
-  
+
+  func hideErrorView() {
+    DispatchQueue.main.async {
+      self.errorViewController.willMove(toParent: nil)
+      self.errorViewController.view.removeFromSuperview()
+      self.errorViewController.removeFromParent()
+    }
+  }
+
+  func showEmptyScreen() {
+    if let searchBarText = searchController.searchBar.text,
+       searchBarText.isEmpty {
+      showErrorView(with: "Введите запрос")
+    }
+  }
 }
+
+// MARK: - WebView
+/*
+ func showContentsWebSite(with url: URL) {
+         webViewController = SFSafariViewController(url: url)
+         present(webViewController, animated: true, completion: nil)
+
+     }
+ */
+
+// MARK: - open detail view
+/*
+ func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
+         let musicItem = self.searchViewModel.searhResults[indexPath.row]
+
+         self.performSegue(withIdentifier: "PreviewMusic_Identifier", sender: musicItem)
+
+     }
+ */

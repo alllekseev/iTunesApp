@@ -76,7 +76,6 @@ extension MainCollectionViewCell: PrepareView {
 
   func configureConstraints() {
     NSLayoutConstraint.activate([
-
       stackView.topAnchor.constraint(equalTo: topAnchor, constant: 8),
       stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 8),
       stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8),

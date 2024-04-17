@@ -37,6 +37,7 @@
 		2AB2680A2BC9565100614982 /* ItemDisplaying.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB268092BC9565100614982 /* ItemDisplaying.swift */; };
 		2AB2680C2BC956AD00614982 /* SearchCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB2680B2BC956AD00614982 /* SearchCollectionViewCell.swift */; };
 		2AB2680E2BC9775300614982 /* LoadingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AB2680D2BC9775300614982 /* LoadingViewController.swift */; };
+		2AC8EAAC2BCDA00D00B0647B /* ErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AC8EAAB2BCDA00D00B0647B /* ErrorView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -72,6 +73,7 @@
 		2AB268092BC9565100614982 /* ItemDisplaying.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ItemDisplaying.swift; sourceTree = "<group>"; };
 		2AB2680B2BC956AD00614982 /* SearchCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCollectionViewCell.swift; sourceTree = "<group>"; };
 		2AB2680D2BC9775300614982 /* LoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
+		2AC8EAAB2BCDA00D00B0647B /* ErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -108,6 +110,7 @@
 			children = (
 				2AA024FB2BC0A6ED00E76693 /* ITunesNavigationController.swift */,
 				2AB2680D2BC9775300614982 /* LoadingViewController.swift */,
+				2AC8EAAB2BCDA00D00B0647B /* ErrorView.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -317,6 +320,7 @@
 				2A7BC42F2BC1A69B00022ACC /* MainCollectionViewController+Updating.swift in Sources */,
 				2AA024C62BBFC29200E76693 /* MainCollectionViewController.swift in Sources */,
 				2AA024E62BC0336D00E76693 /* Endpoints.swift in Sources */,
+				2AC8EAAC2BCDA00D00B0647B /* ErrorView.swift in Sources */,
 				2A42F7ED2BC6A7590086D6F9 /* StoreAPIError.swift in Sources */,
 				2AA024F62BC097FC00E76693 /* PrepareView.swift in Sources */,
 				2AB2680E2BC9775300614982 /* LoadingViewController.swift in Sources */,

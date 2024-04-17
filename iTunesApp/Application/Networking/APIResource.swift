@@ -29,7 +29,7 @@ extension APIResource {
     components.queryItems = queryItems
 
     guard let url = components.url else {
-      print(APIRequestError.notValidURL)
+      print(StoreAPIError.notValidURL)
       return nil
     }
 

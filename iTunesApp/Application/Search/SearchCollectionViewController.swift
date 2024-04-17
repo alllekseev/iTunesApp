@@ -35,6 +35,8 @@ final class SearchCollectionViewController: UICollectionViewController, Collecti
 
   private var searchText: String = ""
 
+  private var error: String?
+
   override func viewDidLoad() {
     super.viewDidLoad()
     collectionView.backgroundColor = .white
@@ -58,6 +60,19 @@ final class SearchCollectionViewController: UICollectionViewController, Collecti
     dataSource = DataSource(collectionView: collectionView) {
       (collectionView, indexPath, item) -> UICollectionViewListCell? in
 
+      guard self.error == nil else {
+        let cell = collectionView.dequeueReusableCell(
+          withReuseIdentifier: self.ID,
+          for: indexPath
+        ) as! UICollectionViewListCell
+
+        var contentConfiguration = cell.defaultContentConfiguration()
+        contentConfiguration.text = self.error
+
+        cell.contentConfiguration = contentConfiguration
+        return cell
+      }
+
       let cell = collectionView.dequeueReusableCell(
         withReuseIdentifier: self.ID,
         for: indexPath
@@ -65,36 +80,28 @@ final class SearchCollectionViewController: UICollectionViewController, Collecti
 
       var contentConfiguration = cell.defaultContentConfiguration()
 
-
       let resultText = item.resultString
 
-      if let range = resultText.range(of: self.searchText, options: .caseInsensitive) {
-        let attributedString = NSMutableAttributedString(string: resultText)
-
-        attributedString.addAttributes(
-          [.font: UIFont.boldSystemFont(ofSize: 17)],
-          range: NSRange(range, in: resultText)
-        )
-
-        contentConfiguration.attributedText = attributedString
+      if let attributedText = self.attributedString(from: resultText) {
+        contentConfiguration.attributedText = attributedText
       } else {
         contentConfiguration.text = item.resultString
       }
+
       cell.contentConfiguration = contentConfiguration
       return cell
     }
   }
 
-  func formattedText(searchText: String, resultText: String) -> NSMutableAttributedString? {
-
+  func attributedString(from resultText: String) -> NSMutableAttributedString? {
     guard let range = resultText.range(of: searchText, options: .caseInsensitive) else {
       return nil
     }
-
     let attributedString = NSMutableAttributedString(string: resultText)
-
-    attributedString.addAttributes([.font: UIFont.boldSystemFont(ofSize: 17)], range: NSRange(range, in: resultText))
-
+    attributedString.addAttributes(
+      [.font: UIFont.boldSystemFont(ofSize: 17)],
+      range: NSRange(range, in: resultText)
+    )
     return attributedString
   }
 
@@ -111,16 +118,18 @@ extension SearchCollectionViewController: SearchBarTextDelegate {
   }
 }
 
-extension SearchCollectionViewController {
+extension SearchCollectionViewController: SearchObserver {
   func searchItemsDidFetch(_ items: [StoreItem]) {
 
+    error = nil
     let items = items.compactMap { SuggestionResults(resultString: $0.name) }
 
     self.items = items
     dataSource.apply(itemsSnapshot, animatingDifferences: true)
   }
 
-  func searchFetchFailed(with error: Error) {
-    print("DEBUG: \(error.localizedDescription)")
+  func searchFetchFailed(with error: String) {
+    self.error = error
+    print("DEBUG: \(error)")
   }
 }

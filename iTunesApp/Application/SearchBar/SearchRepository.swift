@@ -9,11 +9,10 @@ import Foundation
 
 protocol SearchObserver: AnyObject {
   func searchItemsDidFetch(_ items: [StoreItem])
-  func searchFetchFailed(with error: Error)
+  func searchFetchFailed(with error: String)
 }
 
 class SearchRepository {
-//  weak var delegate: SearchRepositoryDelegate?
   private var searchService = iTunesSearchService()
 
   private var observers = [SearchObserver]()
@@ -29,13 +28,16 @@ class SearchRepository {
   func fetchMatchingItems(queryItems: QueryItems) async {
     do {
       searchService.queryItems = queryItems.queryItems
-      var items = try await searchService.fetchItems()
-      items = items.compactMap { $0 }
+      let items = try await searchService.fetchItems().compactMap { $0 }
       observers.forEach { $0.searchItemsDidFetch(items) }
     } catch let error as NSError where error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled {
       // ignore cancellation error
     } catch {
-      observers.forEach { $0.searchFetchFailed(with: error) }
+      if let apiError = error as? StoreAPIError {
+        observers.forEach { $0.searchFetchFailed(with: apiError.customDescription) }
+      } else {
+        observers.forEach { $0.searchFetchFailed(with: error.localizedDescription) }
+      }
     }
   }
 }

@@ -15,6 +15,7 @@ enum StoreAPIError: Error {
   case requestFailed(description: String)
   case invalidStatusCode(statusCode: Int)
   case unknownError(error: Error)
+  case notValidURL
 
   var customDescription: String {
     switch self {
@@ -28,6 +29,8 @@ enum StoreAPIError: Error {
       return "Invalid status code: \(statusCode)"
     case .unknownError(let error):
       return "An unknown error occured \(error.localizedDescription)"
+    case .notValidURL:
+      return "Check URL"
     }
   }
 }
