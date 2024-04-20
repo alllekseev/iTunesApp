@@ -8,22 +8,27 @@
 import UIKit
 
 // TODO: create initializer
-class MainCollectionViewController: UICollectionViewController {
-
-  let errorViewController = ErrorView()
+final class MainCollectionViewController: UICollectionViewController {
 
   // MARK: - Typealiases
 
   typealias DataSource = UICollectionViewDiffableDataSource<String, StoreItem>
   typealias Snapshot = NSDiffableDataSourceSnapshot<String, StoreItem>
 
-  // MARK: - Properties
+  var loadingIndicator = LoaderView().loadar
+
+  // MARK: - Class Instances
 
   var searchController = StoreSearchController()
+  private lazy var errorViewController = ErrorView(frame: view.bounds)
 
-  var dataSource: DataSource!
+  // MARK: - Properties
 
   var items = [StoreItem]()
+
+  // MARK: - CollectionView Elements
+  var dataSource: DataSource!
+
   var itemSnapshot: Snapshot {
     var snapshot = Snapshot()
     snapshot.appendSections(["Results"])
@@ -31,26 +36,45 @@ class MainCollectionViewController: UICollectionViewController {
     return snapshot
   }
 
+  // FIXME: - add AsyncSequence
   var imageLoadTask: [IndexPath: Task<Void, Never>] = [:]
+
+  // MARK: - viewDidLoad
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    navigationItem.searchController = searchController
 
-    collectionView.backgroundColor = .white
-    collectionView.collectionViewLayout = configureLayout()
     collectionView.register(
       MainCollectionViewCell.self,
       forCellWithReuseIdentifier: MainCollectionViewCell.ID
     )
+
+    configureColectionView()
     configureDataSource()
+    prepareUI()
+  }
 
-    showEmptyScreen()
+  // MARK: - Prepare UI
 
+  func prepareUI() {
+    collectionView.backgroundColor = .systemBackground
+
+    view.addSubview(loadingIndicator)
+    view.addSubview(errorViewController)
+    NSLayoutConstraint.activate([
+      loadingIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+      loadingIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+    ])
+  }
+
+  // MARK: - Configure CollectionView
+  func configureColectionView() {
+    navigationItem.searchController = searchController
+    collectionView.collectionViewLayout = configureLayout()
     searchController.searchRepository.addObserver(self)
-    searchController.searchTextHandler = {
-      self.showEmptyScreen()
-    }
+//    searchController.searchTextHandler = { [weak self] in
+//      self?.state = .empty
+//    }
   }
 
   // MARK: - Configure Layout
@@ -90,68 +114,70 @@ class MainCollectionViewController: UICollectionViewController {
     return UICollectionViewCompositionalLayout(section: section)
   }
 
-  func configureDataSource() {
-    dataSource = DataSource(collectionView: collectionView) {
-      (collectionView, indexPath, item) -> UICollectionViewCell? in
-      let cell = collectionView.dequeueReusableCell(
-        withReuseIdentifier: MainCollectionViewCell.ID,
-        for: indexPath
-      ) as! MainCollectionViewCell
+  private func showCollectionView(with items: [StoreItem]) {
+//    self.errorViewController.willMove(toParent: nil)
+//    self.errorViewController.view.removeFromSuperview()
+//    self.errorViewController.removeFromParent()
+//    view = collectionView
 
-      // FIXME: Remove Task from here
-      self.imageLoadTask[indexPath]?.cancel()
-      self.imageLoadTask[indexPath] = Task {
-        try? await cell.configure(for: item)
-        self.imageLoadTask[indexPath] = nil
-      }
-      return cell
-    }
+    errorViewController.isHidden = true
+    self.items = items
+    dataSource.apply(itemSnapshot, animatingDifferences: true)
+  }
+
+  private func showLoadingView() {
+//    errorViewController.view.isHidden = true
+    errorViewController.isHidden = true
+  }
+
+  // FIXME: - change naming
+  private func showErrorView(with errorMessage: String) {
+//    collectionView.isHidden = true
+//    errorViewController.view.isHidden = false
+
+//    self.addChild(self.errorViewController)
+//    self.view.addSubview(self.errorViewController.view)
+//    self.errorViewController.didMove(toParent: self)
+
+    errorViewController.isHidden = false
+
+    let errorMessage = ErrorMessage(message: errorMessage)
+    errorViewController.configureController(errorMessage: errorMessage)
   }
 }
 
 extension MainCollectionViewController: SearchObserver {
   
-  func searchItemsDidFetch(_ items: [StoreItem]) {
-    self.items = items
+//  func searchItemsDidFetch(_ items: [StoreItem]) {
+//    state = .loading
+//    self.items = []
+//    state = items.isEmpty ? .error(.itemsNotFound) : .loaded(items)
+//  }
+//
+//  func searchFetchFailed(with error: StoreAPIError) {
+//    state = .error(error)
+//  }
 
-    if self.items.isEmpty {
-      showErrorView(with: "Элементы не найдены")
-    } else {
-      hideErrorView()
-    }
-
-    dataSource.apply(itemSnapshot, animatingDifferences: true)
-  }
-
-  func searchFetchFailed(with error: String) {
-    showErrorView(with: error)
-  }
-
-  func showErrorView(with error: String) {
-
-    var errorMessage = ErrorMessage()
-    errorMessage.message = error
-    errorViewController.configureController(errorMessage: errorMessage)
-
-    DispatchQueue.main.async {
-      self.view.addSubview(self.errorViewController.view)
-      self.addChild(self.errorViewController)
-      self.errorViewController.didMove(toParent: self)
-    }
-  }
-
-  func hideErrorView() {
-    DispatchQueue.main.async {
-      self.errorViewController.willMove(toParent: nil)
-      self.errorViewController.view.removeFromSuperview()
-      self.errorViewController.removeFromParent()
-    }
-  }
-
-  func showEmptyScreen() {
-    if let searchBarText = searchController.searchBar.text,
-       searchBarText.isEmpty {
-      showErrorView(with: "Введите запрос")
+  func update() {
+    switch searchController.searchRepository.stateManager.state {
+    case .empty:
+//      loadingIndicator.stopAnimating()
+      showErrorView(with: "Введи запрос")
+    case .loading:
+      showLoadingView()
+      loadingIndicator.startAnimating()
+      self.items = []
+      dataSource.apply(itemSnapshot, animatingDifferences: true)
+    case .loaded(let items):
+      self.loadingIndicator.stopAnimating()
+      guard !items.isEmpty else {
+        showErrorView(with: StoreAPIError.itemsNotFound.customDescription)
+        return
+      }
+      self.showCollectionView(with: items)
+    case .error(let error):
+      loadingIndicator.stopAnimating()
+      showErrorView(with: error.customDescription)
     }
   }
 }

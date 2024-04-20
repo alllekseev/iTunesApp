@@ -24,6 +24,7 @@ final class StoreSearchController: UISearchController {
     searchServise = iTunesSearchService()
     resultsController = SearchCollectionViewController(collectionViewLayout: UICollectionViewLayout())
     super.init(searchResultsController: resultsController)
+    resultsController.searchRepository = searchRepository
     setupSearchBar()
     searchTextHandler()
   }
@@ -53,7 +54,7 @@ final class StoreSearchController: UISearchController {
 
 
     showsSearchResultsController = true
-    automaticallyShowsSearchResultsController = true
+    
     obscuresBackgroundDuringPresentation = true
   }
 
@@ -105,6 +106,8 @@ extension StoreSearchController: UISearchBarDelegate {
 
   func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
     searchBar.resignFirstResponder()
+    searchRepository.stateManager.state = .empty
+    searchBar.selectedScopeButtonIndex = 0
     dismiss(animated: true, completion: nil)
   }
 

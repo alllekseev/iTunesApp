@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2A11658E2BCFE2AC008C5887 /* MainCollectionViewController+DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A11658D2BCFE2AC008C5887 /* MainCollectionViewController+DataSource.swift */; };
 		2A3DEB002BCBE31300D8361E /* StoreSearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3DEAFF2BCBE31300D8361E /* StoreSearchController.swift */; };
 		2A3DEB022BCBF06E00D8361E /* QueryItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3DEB012BCBF06E00D8361E /* QueryItems.swift */; };
 		2A3DEB042BCBF09400D8361E /* SearchRepositoryDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3DEB032BCBF09400D8361E /* SearchRepositoryDelegate.swift */; };
@@ -14,8 +15,8 @@
 		2A3DEB082BCBF10E00D8361E /* SearchBarTextDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3DEB072BCBF10E00D8361E /* SearchBarTextDelegate.swift */; };
 		2A408C842BC422E700FD469C /* APIResource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A408C832BC422E700FD469C /* APIResource.swift */; };
 		2A42F7ED2BC6A7590086D6F9 /* StoreAPIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A42F7EC2BC6A7590086D6F9 /* StoreAPIError.swift */; };
+		2A7864672BD15E410085A764 /* StateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A7864662BD15E410085A764 /* StateManager.swift */; };
 		2A7BC42A2BC140D100022ACC /* SearchCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A7BC4292BC140D100022ACC /* SearchCollectionViewController.swift */; };
-		2A7BC42F2BC1A69B00022ACC /* MainCollectionViewController+Updating.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A7BC42E2BC1A69B00022ACC /* MainCollectionViewController+Updating.swift */; };
 		2AA024C22BBFC29200E76693 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA024C12BBFC29200E76693 /* AppDelegate.swift */; };
 		2AA024C42BBFC29200E76693 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA024C32BBFC29200E76693 /* SceneDelegate.swift */; };
 		2AA024C62BBFC29200E76693 /* MainCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AA024C52BBFC29200E76693 /* MainCollectionViewController.swift */; };
@@ -41,6 +42,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2A11658D2BCFE2AC008C5887 /* MainCollectionViewController+DataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainCollectionViewController+DataSource.swift"; sourceTree = "<group>"; };
 		2A3DEAFF2BCBE31300D8361E /* StoreSearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreSearchController.swift; sourceTree = "<group>"; };
 		2A3DEB012BCBF06E00D8361E /* QueryItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryItems.swift; sourceTree = "<group>"; };
 		2A3DEB032BCBF09400D8361E /* SearchRepositoryDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRepositoryDelegate.swift; sourceTree = "<group>"; };
@@ -48,8 +50,8 @@
 		2A3DEB072BCBF10E00D8361E /* SearchBarTextDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarTextDelegate.swift; sourceTree = "<group>"; };
 		2A408C832BC422E700FD469C /* APIResource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIResource.swift; sourceTree = "<group>"; };
 		2A42F7EC2BC6A7590086D6F9 /* StoreAPIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreAPIError.swift; sourceTree = "<group>"; };
+		2A7864662BD15E410085A764 /* StateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateManager.swift; sourceTree = "<group>"; };
 		2A7BC4292BC140D100022ACC /* SearchCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCollectionViewController.swift; sourceTree = "<group>"; };
-		2A7BC42E2BC1A69B00022ACC /* MainCollectionViewController+Updating.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainCollectionViewController+Updating.swift"; sourceTree = "<group>"; };
 		2AA024BE2BBFC29200E76693 /* iTunesApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iTunesApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		2AA024C12BBFC29200E76693 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		2AA024C32BBFC29200E76693 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -111,6 +113,7 @@
 				2AA024FB2BC0A6ED00E76693 /* ITunesNavigationController.swift */,
 				2AB2680D2BC9775300614982 /* LoadingViewController.swift */,
 				2AC8EAAB2BCDA00D00B0647B /* ErrorView.swift */,
+				2A7864662BD15E410085A764 /* StateManager.swift */,
 			);
 			path = Base;
 			sourceTree = "<group>";
@@ -200,7 +203,7 @@
 			children = (
 				2AA024C52BBFC29200E76693 /* MainCollectionViewController.swift */,
 				2AA024EB2BC0610200E76693 /* MainCollectionViewCell.swift */,
-				2A7BC42E2BC1A69B00022ACC /* MainCollectionViewController+Updating.swift */,
+				2A11658D2BCFE2AC008C5887 /* MainCollectionViewController+DataSource.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -311,13 +314,14 @@
 			files = (
 				2AA024DD2BBFCD5D00E76693 /* SearchScope.swift in Sources */,
 				2A3DEB042BCBF09400D8361E /* SearchRepositoryDelegate.swift in Sources */,
+				2A11658E2BCFE2AC008C5887 /* MainCollectionViewController+DataSource.swift in Sources */,
 				2AA024E12BC0117000E76693 /* StoreItem.swift in Sources */,
 				2AB2680C2BC956AD00614982 /* SearchCollectionViewCell.swift in Sources */,
 				2AB268082BC9560900614982 /* CollectionViewControllerBuilder.swift in Sources */,
 				2AB2680A2BC9565100614982 /* ItemDisplaying.swift in Sources */,
 				2AA024F22BC0639800E76693 /* UIImage+Extension.swift in Sources */,
 				2A408C842BC422E700FD469C /* APIResource.swift in Sources */,
-				2A7BC42F2BC1A69B00022ACC /* MainCollectionViewController+Updating.swift in Sources */,
+				2A7864672BD15E410085A764 /* StateManager.swift in Sources */,
 				2AA024C62BBFC29200E76693 /* MainCollectionViewController.swift in Sources */,
 				2AA024E62BC0336D00E76693 /* Endpoints.swift in Sources */,
 				2AC8EAAC2BCDA00D00B0647B /* ErrorView.swift in Sources */,

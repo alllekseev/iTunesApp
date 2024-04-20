@@ -51,7 +51,6 @@ extension APIRequest where Response: Decodable {
     guard let request = request else {
       throw StoreAPIError.notValidURL
     }
-    print(request)
     let (data, response) = try await URLSession.shared.data(for: request)
 
     if let httpResponse = response as? HTTPURLResponse,

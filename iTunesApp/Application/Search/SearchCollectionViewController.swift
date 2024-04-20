@@ -7,7 +7,18 @@
 
 import UIKit
 
-final class SearchCollectionViewController: UICollectionViewController, CollectionViewControllerBuilder {
+final class SearchCollectionViewController: UICollectionViewController {
+
+  enum Item: Hashable {
+    case results(StoreItem)
+    case error(String?)
+  }
+
+  var searchRepository = SearchRepository()
+
+  typealias ItemType = Item
+  typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Item>
+  typealias DataSource = UICollectionViewDiffableDataSource<Section, Item>
 
   struct SuggestionResults: Hashable, Identifiable {
     let id = UUID()
@@ -15,23 +26,28 @@ final class SearchCollectionViewController: UICollectionViewController, Collecti
   }
 
   typealias Section = Int
-  typealias ItemType = SuggestionResults
+//  typealias ItemType = SuggestionResults
 
   let ID = "cell"
 
   let loadingViewController = LoadingViewController()
+  var loadingIndicator = LoaderView().loadar
 
   var dataSource: DataSource!
-  var items: [ItemType] = []
+  var items = [Item]()
   var itemsSnapshot: Snapshot {
     var snaphot = Snapshot()
     snaphot.appendSections([0])
-    snaphot.appendItems(items)
+    snaphot.appendItems(items, toSection: 0)
     return snaphot
   }
 
-  var searchTask: Task<Void, Never>? = nil
-  var imageLoadTask: [IndexPath: Task<Void, Error>] = [:]
+  var errorSnapshot: Snapshot {
+    var snaphot = Snapshot()
+    snaphot.appendSections([1])
+    snaphot.appendItems([.error(self.error)], toSection: 1)
+    return snaphot
+  }
 
   private var searchText: String = ""
 
@@ -39,7 +55,7 @@ final class SearchCollectionViewController: UICollectionViewController, Collecti
 
   override func viewDidLoad() {
     super.viewDidLoad()
-    collectionView.backgroundColor = .white
+    collectionView.backgroundColor = .systemBackground
 
     collectionView.register(UICollectionViewListCell.self, forCellWithReuseIdentifier: ID)
 
@@ -48,52 +64,47 @@ final class SearchCollectionViewController: UICollectionViewController, Collecti
 
     configureDataSource()
 
-//    configureLoadingController()
-  }
+    collectionView.dataSource = dataSource
 
-  func configureLoadingController() {
-    addChild(loadingViewController)
-    view.addSubview(loadingViewController.view)
+    view.addSubview(loadingIndicator)
+    NSLayoutConstraint.activate([
+      loadingIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+      loadingIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+    ])
   }
 
   func configureDataSource() {
     dataSource = DataSource(collectionView: collectionView) {
       (collectionView, indexPath, item) -> UICollectionViewListCell? in
 
-      guard self.error == nil else {
+
         let cell = collectionView.dequeueReusableCell(
           withReuseIdentifier: self.ID,
           for: indexPath
         ) as! UICollectionViewListCell
 
         var contentConfiguration = cell.defaultContentConfiguration()
-        contentConfiguration.text = self.error
+
+        switch item {
+        case .results(let item):
+          let resultText = item.name
+          if let attributedText = self.attributedString(from: resultText) {
+            contentConfiguration.attributedText = attributedText
+          } else {
+            contentConfiguration.text = resultText
+          }
+        case .error(let error):
+          if let error = error {
+            contentConfiguration.text = error
+          }
+        }
 
         cell.contentConfiguration = contentConfiguration
         return cell
       }
-
-      let cell = collectionView.dequeueReusableCell(
-        withReuseIdentifier: self.ID,
-        for: indexPath
-      ) as! UICollectionViewListCell
-
-      var contentConfiguration = cell.defaultContentConfiguration()
-
-      let resultText = item.resultString
-
-      if let attributedText = self.attributedString(from: resultText) {
-        contentConfiguration.attributedText = attributedText
-      } else {
-        contentConfiguration.text = item.resultString
-      }
-
-      cell.contentConfiguration = contentConfiguration
-      return cell
-    }
   }
 
-  func attributedString(from resultText: String) -> NSMutableAttributedString? {
+  private func attributedString(from resultText: String) -> NSMutableAttributedString? {
     guard let range = resultText.range(of: searchText, options: .caseInsensitive) else {
       return nil
     }
@@ -119,17 +130,31 @@ extension SearchCollectionViewController: SearchBarTextDelegate {
 }
 
 extension SearchCollectionViewController: SearchObserver {
-  func searchItemsDidFetch(_ items: [StoreItem]) {
+  func update() {
+    switch searchRepository.stateManager.state {
+    case .empty:
+      loadingIndicator.stopAnimating()
+      self.error = StoreAPIError.itemsNotFound.customDescription
+      dataSource.apply(errorSnapshot, animatingDifferences: true)
+    case .loading:
+      self.items = []
+      self.error = nil
+      loadingIndicator.startAnimating()
+    case .loaded(let items):
+      loadingIndicator.stopAnimating()
 
-    error = nil
-    let items = items.compactMap { SuggestionResults(resultString: $0.name) }
+      guard !items.isEmpty else {
+        self.error = StoreAPIError.itemsNotFound.customDescription
+        dataSource.apply(errorSnapshot, animatingDifferences: true)
+        return
+      }
 
-    self.items = items
-    dataSource.apply(itemsSnapshot, animatingDifferences: true)
-  }
-
-  func searchFetchFailed(with error: String) {
-    self.error = error
-    print("DEBUG: \(error)")
+      self.items = items.map { .results($0) }
+      dataSource.apply(itemsSnapshot, animatingDifferences: true)
+    case .error(let error):
+      loadingIndicator.stopAnimating()
+      self.error = error.customDescription
+      dataSource.apply(errorSnapshot, animatingDifferences: true)
+    }
   }
 }

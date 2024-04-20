@@ -9,12 +9,13 @@ import Foundation
 
 //timecode: 2:10:00
 
-enum StoreAPIError: Error {
+enum StoreAPIError: Error, LocalizedError {
   case invalidData
   case jsonParsingFailure
   case requestFailed(description: String)
   case invalidStatusCode(statusCode: Int)
   case unknownError(error: Error)
+  case itemsNotFound
   case notValidURL
 
   var customDescription: String {
@@ -29,6 +30,8 @@ enum StoreAPIError: Error {
       return "Invalid status code: \(statusCode)"
     case .unknownError(let error):
       return "An unknown error occured \(error.localizedDescription)"
+    case .itemsNotFound:
+      return "Items not found"
     case .notValidURL:
       return "Check URL"
     }

@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import OSLog
 
 protocol APIResource {
   associatedtype Response: Decodable
@@ -20,6 +21,12 @@ extension APIResource {
 }
 
 extension APIResource {
+  private var logger: Logger {
+    Logger(subsystem: "Network layer", category: "Creating request")
+  }
+}
+
+extension APIResource {
   var request: URLRequest? {
     var components = URLComponents()
 
@@ -29,7 +36,7 @@ extension APIResource {
     components.queryItems = queryItems
 
     guard let url = components.url else {
-      print(StoreAPIError.notValidURL)
+      logger.error("\(StoreAPIError.notValidURL.customDescription)")
       return nil
     }
 

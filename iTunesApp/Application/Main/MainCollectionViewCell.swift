@@ -44,24 +44,6 @@ final class MainCollectionViewCell: UICollectionViewCell, ItemDisplaying {
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
-  
-
-//  func configure(for item: StoreItem) async {
-//    titleLabel.text = item.name
-//    detailLabel.text = item.artist
-//    itemImageView.image = UIImage(systemName: "photo")
-//
-//    do {
-//      let image = try await UIImage().fetchImage(from: item.artworkURL)
-//
-//      self.itemImageView.image = image
-//    } catch let error as NSError where error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled {
-//      // ignore cancelation errors
-//    } catch {
-//      self.itemImageView.image = UIImage(systemName: "photo")
-//      print("Error fetching image: \(error)")
-//    }
-//  }
 }
 
 extension MainCollectionViewCell: PrepareView {

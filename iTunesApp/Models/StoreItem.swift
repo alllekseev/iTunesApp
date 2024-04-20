@@ -8,7 +8,8 @@
 import Foundation
 
 // TODO: don't show elements if some of the param is missed
-struct StoreItem: Hashable {
+struct StoreItem: Hashable, Identifiable {
+  let id = UUID()
   let name: String
   let artist: String
   let kind: String
@@ -48,21 +49,5 @@ extension StoreItem: Decodable {
     description = (try? container.decode(String.self, forKey: .description))
         ?? (try? additionalContainer.decode(String.self, forKey: .description))
         ?? ""
-  }
-}
-
-extension Data {
-  func prettyPrintedJSONString() {
-    guard let jsonObject = try? JSONSerialization.jsonObject(
-      with: self,
-      options: []
-    ),
-          let jsonData = try? JSONSerialization.data(withJSONObject: jsonObject, options: [.prettyPrinted]),
-          let prettyJSONString = String(data: jsonData, encoding: .utf8) else {
-      print("Failed to read JSON Object")
-      return
-    }
-    print(prettyJSONString)
-
   }
 }

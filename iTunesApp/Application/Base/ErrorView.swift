@@ -11,8 +11,8 @@ struct ErrorMessage {
   var message: String
   var iconName: String = "magnifyingglass"
 
-  init() {
-    message = ""
+  init(message: String) {
+    self.message = message
   }
 
   var icon: UIImage {
@@ -26,7 +26,7 @@ extension UIColor {
   static let greyColor = UIColor(red: 28/255, green: 28/255, blue: 30/255, alpha: 0.3)
 }
 
-final class ErrorView: UIViewController {
+final class ErrorView: UIView {
 
   private var stackView: UIStackView = {
     let stackView = UIStackView()
@@ -39,24 +39,30 @@ final class ErrorView: UIViewController {
 
   private var iconImageView: UIImageView = {
     let imageView = UIImageView()
-    imageView.tintColor = .greyColor
+    imageView.tintColor = .systemGray
     return imageView
   }()
 
   private var messageLabel: UILabel = {
     let label = UILabel()
     label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-    label.textColor = .greyColor
+    label.textColor = .systemGray
     label.numberOfLines = 0
     label.textAlignment = .center
     return label
   }()
 
-  override func viewDidLoad() {
-    super.viewDidLoad()
-
+  override init(frame: CGRect) {
+    super.init(frame: frame)
+    backgroundColor = .systemBackground
     prepareUI()
   }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
+
 
   func configureController(errorMessage: ErrorMessage) {
     DispatchQueue.main.async {
@@ -70,16 +76,16 @@ extension ErrorView: PrepareView {
   func setupViews() {
     stackView.addArrangedSubview(iconImageView)
     stackView.addArrangedSubview(messageLabel)
-    view.setupView(stackView)
+    setupView(stackView)
   }
   
   func configureConstraints() {
     NSLayoutConstraint.activate([
 //      stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-      stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-      stackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+      stackView.centerYAnchor.constraint(equalTo: centerYAnchor),
+      stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
 //      stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -16),
-      stackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+      stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
     ])
   }
 }

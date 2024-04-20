@@ -8,9 +8,11 @@
 import Foundation
 
 struct QueryItems {
+  typealias SearchScope = String
+
   let term: String
-  let mediaType: String
-  var language: Language = .russian
+  let mediaType: SearchScope
+  var language: Language = .english
   let elementsAmount: Int = 30
 
   var searchTerm: String {
@@ -18,14 +20,14 @@ struct QueryItems {
   }
 
   enum Language: String {
-    case english = "en_en"
+    case english = "en_us"
     case russian = "ru_ru"
   }
 
   var queryItems: [URLQueryItem] {
     let queryItems = [
       "term": "\(searchTerm)",
-      "entity": "\(mediaType)",
+      "media": "\(mediaType)",
       "lang": language.rawValue,
       "limit": "\(elementsAmount)"
     ]
