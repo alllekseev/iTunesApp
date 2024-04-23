@@ -62,6 +62,10 @@ extension APIRequest where Response: Decodable {
       throw StoreAPIError.jsonParsingFailure
     }
 
+    guard !decoded.results.isEmpty else {
+      throw StoreAPIError.itemsNotFound
+    }
+
     return decoded.results
   }
 }

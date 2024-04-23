@@ -47,15 +47,14 @@ final class StoreSearchController: UISearchController {
       "Type you request",
       comment: "Search placeholder for search bar"
     )
-    searchBar.showsScopeBar = true
+//    searchBar.showsScopeBar = true
     searchBar.autocapitalizationType = .none
     searchBar.scopeButtonTitles = SearchScope.allCases.map { $0.title }
-    searchBar.showsScopeBar = true
 
 
-    showsSearchResultsController = true
-    
-    obscuresBackgroundDuringPresentation = true
+//    showsSearchResultsController = true
+//    scopeBarActivation = .manual
+//    obscuresBackgroundDuringPresentation = true
   }
 
   private func setupResultsController() {
@@ -97,6 +96,10 @@ extension StoreSearchController: UISearchBarDelegate {
     selectedScopeButtonIndexDidChange selectedScope: Int
   ) {
     updateSearchResults(for: self)
+  }
+
+  func searchBarBookmarkButtonClicked(_ searchBar: UISearchBar) {
+    searchRepository.stateManager.state = .empty
   }
 
   func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {

@@ -72,9 +72,6 @@ final class MainCollectionViewController: UICollectionViewController {
     navigationItem.searchController = searchController
     collectionView.collectionViewLayout = configureLayout()
     searchController.searchRepository.addObserver(self)
-//    searchController.searchTextHandler = { [weak self] in
-//      self?.state = .empty
-//    }
   }
 
   // MARK: - Configure Layout
@@ -140,6 +137,7 @@ final class MainCollectionViewController: UICollectionViewController {
 //    self.errorViewController.didMove(toParent: self)
 
     errorViewController.isHidden = false
+    navigationItem.hidesSearchBarWhenScrolling = false
 
     let errorMessage = ErrorMessage(message: errorMessage)
     errorViewController.configureController(errorMessage: errorMessage)
@@ -170,10 +168,6 @@ extension MainCollectionViewController: SearchObserver {
       dataSource.apply(itemSnapshot, animatingDifferences: true)
     case .loaded(let items):
       self.loadingIndicator.stopAnimating()
-      guard !items.isEmpty else {
-        showErrorView(with: StoreAPIError.itemsNotFound.customDescription)
-        return
-      }
       self.showCollectionView(with: items)
     case .error(let error):
       loadingIndicator.stopAnimating()

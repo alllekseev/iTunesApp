@@ -7,16 +7,23 @@
 
 import UIKit
 
+struct Item: Hashable, Identifiable {
+  let id = UUID()
+  let name: String
+}
+
 final class SearchCollectionViewController: UICollectionViewController {
 
-  enum Item: Hashable {
-    case results(StoreItem)
-    case error(String?)
-  }
+//  enum Item: Hashable {
+//    case results(StoreItem)
+//    case error(String?)
+//  }
+
+
 
   var searchRepository = SearchRepository()
 
-  typealias ItemType = Item
+//  typealias ItemType = Item
   typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Item>
   typealias DataSource = UICollectionViewDiffableDataSource<Section, Item>
 
@@ -38,16 +45,16 @@ final class SearchCollectionViewController: UICollectionViewController {
   var itemsSnapshot: Snapshot {
     var snaphot = Snapshot()
     snaphot.appendSections([0])
-    snaphot.appendItems(items, toSection: 0)
+    snaphot.appendItems(items)
     return snaphot
   }
 
-  var errorSnapshot: Snapshot {
-    var snaphot = Snapshot()
-    snaphot.appendSections([1])
-    snaphot.appendItems([.error(self.error)], toSection: 1)
-    return snaphot
-  }
+//  var errorSnapshot: Snapshot {
+//    var snaphot = Snapshot()
+//    snaphot.appendSections([1])
+//    snaphot.appendItems([.error(self.error)], toSection: 1)
+//    return snaphot
+//  }
 
   private var searchText: String = ""
 
@@ -66,42 +73,53 @@ final class SearchCollectionViewController: UICollectionViewController {
 
     collectionView.dataSource = dataSource
 
-    view.addSubview(loadingIndicator)
-    NSLayoutConstraint.activate([
-      loadingIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-      loadingIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-    ])
+//    view.addSubview(loadingIndicator)
+//    NSLayoutConstraint.activate([
+//      loadingIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+//      loadingIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+//    ])
   }
 
   func configureDataSource() {
     dataSource = DataSource(collectionView: collectionView) {
       (collectionView, indexPath, item) -> UICollectionViewListCell? in
 
+      let cell = collectionView.dequeueReusableCell(
+        withReuseIdentifier: self.ID,
+        for: indexPath
+      ) as! UICollectionViewListCell
 
-        let cell = collectionView.dequeueReusableCell(
-          withReuseIdentifier: self.ID,
-          for: indexPath
-        ) as! UICollectionViewListCell
+      var contentConfiguration = cell.defaultContentConfiguration()
+      let imageConfiguration = UIImage.SymbolConfiguration(font: UIFont.systemFont(ofSize: 16))
+      contentConfiguration.image = UIImage(systemName: "magnifyingglass", withConfiguration: imageConfiguration)
+      contentConfiguration.imageProperties.tintColor = .systemGray
 
-        var contentConfiguration = cell.defaultContentConfiguration()
 
-        switch item {
-        case .results(let item):
-          let resultText = item.name
-          if let attributedText = self.attributedString(from: resultText) {
-            contentConfiguration.attributedText = attributedText
-          } else {
-            contentConfiguration.text = resultText
-          }
-        case .error(let error):
-          if let error = error {
-            contentConfiguration.text = error
-          }
-        }
+//      switch item {
+//      case .results(let item):
+//        let resultText = item.name
+//        if let attributedText = self.attributedString(from: resultText) {
+//          contentConfiguration.attributedText = attributedText
+//        } else {
+//          contentConfiguration.text = resultText
+//        }
+//      case .error(let error):
+//        if let error = error {
+//          contentConfiguration.text = error
+//        }
+//      }
 
-        cell.contentConfiguration = contentConfiguration
-        return cell
+      let resultText = item.name
+      contentConfiguration.textProperties.color = .systemGray
+      if let attributedText = self.attributedString(from: resultText) {
+        contentConfiguration.attributedText = attributedText
+      } else {
+        contentConfiguration.text = resultText
       }
+
+      cell.contentConfiguration = contentConfiguration
+      return cell
+    }
   }
 
   private func attributedString(from resultText: String) -> NSMutableAttributedString? {
@@ -110,17 +128,33 @@ final class SearchCollectionViewController: UICollectionViewController {
     }
     let attributedString = NSMutableAttributedString(string: resultText)
     attributedString.addAttributes(
-      [.font: UIFont.boldSystemFont(ofSize: 17)],
+      [
+        .font: UIFont.boldSystemFont(ofSize: 17),
+        .foregroundColor: UIColor.label
+      ],
       range: NSRange(range, in: resultText)
     )
     return attributedString
   }
 
+
   private func listLayout() -> UICollectionViewCompositionalLayout {
     var listConfiguration = UICollectionLayoutListConfiguration(appearance: .grouped)
     listConfiguration.backgroundColor = .clear
+    listConfiguration.itemSeparatorHandler = {
+      (indexPath, sectionSeparatorConfiguration) in
+      var configuration = sectionSeparatorConfiguration
+      configuration.bottomSeparatorInsets.leading = 0
+      return configuration
+    }
     return UICollectionViewCompositionalLayout.list(using: listConfiguration)
   }
+
+  override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    collectionView.deselectItem(at: indexPath, animated: true)
+  }
+
+
 }
 
 extension SearchCollectionViewController: SearchBarTextDelegate {
@@ -133,28 +167,19 @@ extension SearchCollectionViewController: SearchObserver {
   func update() {
     switch searchRepository.stateManager.state {
     case .empty:
-      loadingIndicator.stopAnimating()
-      self.error = StoreAPIError.itemsNotFound.customDescription
-      dataSource.apply(errorSnapshot, animatingDifferences: true)
+//      loadingIndicator.stopAnimating()
+      return
     case .loading:
       self.items = []
-      self.error = nil
-      loadingIndicator.startAnimating()
+//      loadingIndicator.startAnimating()
     case .loaded(let items):
-      loadingIndicator.stopAnimating()
-
-      guard !items.isEmpty else {
-        self.error = StoreAPIError.itemsNotFound.customDescription
-        dataSource.apply(errorSnapshot, animatingDifferences: true)
-        return
-      }
-
-      self.items = items.map { .results($0) }
+//      loadingIndicator.stopAnimating()
+      self.items = items.compactMap { Item(name: $0.name) }
       dataSource.apply(itemsSnapshot, animatingDifferences: true)
-    case .error(let error):
-      loadingIndicator.stopAnimating()
-      self.error = error.customDescription
-      dataSource.apply(errorSnapshot, animatingDifferences: true)
+    case .error:
+//      loadingIndicator.stopAnimating()
+      items.append(Item(name: self.searchText))
+      dataSource.apply(itemsSnapshot, animatingDifferences: true)
     }
   }
 }
