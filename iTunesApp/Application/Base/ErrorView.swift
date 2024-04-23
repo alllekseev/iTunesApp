@@ -7,25 +7,6 @@
 
 import UIKit
 
-struct ErrorMessage {
-  var message: String
-  var iconName: String = "magnifyingglass"
-
-  init(message: String) {
-    self.message = message
-  }
-
-  var icon: UIImage {
-    let font = UIFont.systemFont(ofSize: 24, weight: .medium)
-    let configuration = UIImage.SymbolConfiguration(font: font)
-    return UIImage(systemName: iconName, withConfiguration: configuration)!
-  }
-}
-
-extension UIColor {
-  static let greyColor = UIColor(red: 28/255, green: 28/255, blue: 30/255, alpha: 0.3)
-}
-
 final class ErrorView: UIView {
 
   private var stackView: UIStackView = {
@@ -64,10 +45,14 @@ final class ErrorView: UIView {
   
 
 
-  func configureController(errorMessage: ErrorMessage) {
+  func configureController(_ context: ErrorContext) {
     DispatchQueue.main.async {
-      self.iconImageView.image = errorMessage.icon
-      self.messageLabel.text = errorMessage.message
+      self.iconImageView.image = UIImage(
+        systemName: context.iconName,
+        size: 24,
+        and: .medium
+      )
+      self.messageLabel.text = context.message
     }
   }
 }

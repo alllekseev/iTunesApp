@@ -1,5 +1,5 @@
 //
-//  StoreAPIError.swift
+//  APIError.swift
 //  iTunesApp
 //
 //  Created by Олег Алексеев on 10/04/2024.
@@ -7,9 +7,7 @@
 
 import Foundation
 
-//timecode: 2:10:00
-
-enum StoreAPIError: Error, LocalizedError {
+enum APIError: Error, LocalizedError {
   case invalidData
   case jsonParsingFailure
   case requestFailed(description: String)

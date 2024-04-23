@@ -8,10 +8,6 @@
 import Foundation
 
 protocol SearchObserver: AnyObject {
-//  func searchItemsDidFetch(_ items: [StoreItem])
-  // TODO: reorganize project structure
-//  func searchFetchFailed(with error: StoreAPIError)
-
   func update()
 }
 
@@ -51,7 +47,7 @@ class SearchRepository {
       stateManager.state = .loaded(items)
     } catch let error as NSError where error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled {
     } catch {
-      if let error = error as? StoreAPIError {
+      if let error = error as? APIError {
         stateManager.state = .error(error)
       }
     }

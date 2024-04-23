@@ -26,7 +26,7 @@ extension ItemDisplaying {
     } catch let error as NSError where error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled {
       // ignore cancelation errors
     } catch {
-      throw StoreAPIError.unknownError(error: error)
+      throw APIError.unknownError(error: error)
     }
   }
 }

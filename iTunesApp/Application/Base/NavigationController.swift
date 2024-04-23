@@ -1,5 +1,5 @@
 //
-//  ITunesNavigationController.swift
+//  NavigationController.swift
 //  iTunesApp
 //
 //  Created by Олег Алексеев on 06.04.2024.
@@ -7,7 +7,7 @@
 
 import UIKit
 
-class ITunesNavigationController: UINavigationController {
+class NavigationController: UINavigationController {
 
   override func viewDidLoad() {
     super.viewDidLoad()

@@ -15,12 +15,12 @@ final class MainCollectionViewController: UICollectionViewController {
   typealias DataSource = UICollectionViewDiffableDataSource<String, StoreItem>
   typealias Snapshot = NSDiffableDataSourceSnapshot<String, StoreItem>
 
-  var loadingIndicator = LoaderView().loadar
+  var loadingIndicator = Loader().indicator
 
   // MARK: - Class Instances
 
-  var searchController = StoreSearchController()
-  private lazy var errorViewController = ErrorView(frame: view.bounds)
+  var searchController = SearchController()
+  private lazy var errorView = ErrorView(frame: view.bounds)
 
   // MARK: - Properties
 
@@ -60,7 +60,7 @@ final class MainCollectionViewController: UICollectionViewController {
     collectionView.backgroundColor = .systemBackground
 
     view.addSubview(loadingIndicator)
-    view.addSubview(errorViewController)
+    view.addSubview(errorView)
     NSLayoutConstraint.activate([
       loadingIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
       loadingIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
@@ -112,35 +112,35 @@ final class MainCollectionViewController: UICollectionViewController {
   }
 
   private func showCollectionView(with items: [StoreItem]) {
-//    self.errorViewController.willMove(toParent: nil)
-//    self.errorViewController.view.removeFromSuperview()
-//    self.errorViewController.removeFromParent()
+//    self.errorView.willMove(toParent: nil)
+//    self.errorView.view.removeFromSuperview()
+//    self.errorView.removeFromParent()
 //    view = collectionView
 
-    errorViewController.isHidden = true
+    errorView.isHidden = true
     self.items = items
     dataSource.apply(itemSnapshot, animatingDifferences: true)
   }
 
   private func showLoadingView() {
-//    errorViewController.view.isHidden = true
-    errorViewController.isHidden = true
+//    errorView.view.isHidden = true
+    errorView.isHidden = true
   }
 
   // FIXME: - change naming
-  private func showErrorView(with errorMessage: String) {
+  private func showErrorView(with message: String) {
 //    collectionView.isHidden = true
-//    errorViewController.view.isHidden = false
+//    errorView.view.isHidden = false
 
-//    self.addChild(self.errorViewController)
-//    self.view.addSubview(self.errorViewController.view)
-//    self.errorViewController.didMove(toParent: self)
+//    self.addChild(self.errorView)
+//    self.view.addSubview(self.errorView.view)
+//    self.errorView.didMove(toParent: self)
 
-    errorViewController.isHidden = false
+    errorView.isHidden = false
     navigationItem.hidesSearchBarWhenScrolling = false
 
-    let errorMessage = ErrorMessage(message: errorMessage)
-    errorViewController.configureController(errorMessage: errorMessage)
+    let errorContext = ErrorContext(message: message)
+    errorView.configureController(errorContext)
   }
 }
 

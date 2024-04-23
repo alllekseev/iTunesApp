@@ -6,15 +6,6 @@
 //
 
 import Foundation
-import UIKit
-
-enum StoreAPIError1: Error, LocalizedError {
-  case itemsNotFound
-  case requestFailed
-  case imageDataMissing
-  case notValidURL
-  case imageURLNotFound
-}
 
 protocol APIRequest {
   associatedtype Response
@@ -49,21 +40,21 @@ extension APIRequest where Response: Decodable {
 
   func fetchItems() async throws -> [Response] {
     guard let request = request else {
-      throw StoreAPIError.notValidURL
+      throw APIError.notValidURL
     }
     let (data, response) = try await URLSession.shared.data(for: request)
 
     if let httpResponse = response as? HTTPURLResponse,
           httpResponse.statusCode != 200 {
-      throw StoreAPIError.invalidStatusCode(statusCode: httpResponse.statusCode)
+      throw APIError.invalidStatusCode(statusCode: httpResponse.statusCode)
     }
 
     guard let decoded = try? JSONDecoder().decode(SearchResponse<Response>.self, from: data) else {
-      throw StoreAPIError.jsonParsingFailure
+      throw APIError.jsonParsingFailure
     }
 
     guard !decoded.results.isEmpty else {
-      throw StoreAPIError.itemsNotFound
+      throw APIError.itemsNotFound
     }
 
     return decoded.results
