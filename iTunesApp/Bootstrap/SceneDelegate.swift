@@ -16,7 +16,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     willConnectTo session: UISceneSession,
     options connectionOptions: UIScene.ConnectionOptions
   ) {
-    let navigationController = ITunesNavigationController()
+    let navigationController = NavigationController()
 
     guard let windowScene = scene as? UIWindowScene else { return }
 

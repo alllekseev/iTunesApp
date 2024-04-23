@@ -1,5 +1,5 @@
 //
-//  SearchCollectionViewController.swift
+//  ResultCollectionViewController.swift
 //  iTunesApp
 //
 //  Created by Олег Алексеев on 06.04.2024.
@@ -12,7 +12,7 @@ struct Item: Hashable, Identifiable {
   let name: String
 }
 
-final class SearchCollectionViewController: UICollectionViewController {
+final class ResultCollectionViewController: UICollectionViewController {
 
 //  enum Item: Hashable {
 //    case results(StoreItem)
@@ -37,8 +37,7 @@ final class SearchCollectionViewController: UICollectionViewController {
 
   let ID = "cell"
 
-  let loadingViewController = LoadingViewController()
-  var loadingIndicator = LoaderView().loadar
+  var loadingIndicator = Loader().indicator
 
   var dataSource: DataSource!
   var items = [Item]()
@@ -157,13 +156,13 @@ final class SearchCollectionViewController: UICollectionViewController {
 
 }
 
-extension SearchCollectionViewController: SearchBarTextDelegate {
+extension ResultCollectionViewController: SearchBarTextDelegate {
   func searchTextDidChange(_ searchText: String) {
     self.searchText = searchText
   }
 }
 
-extension SearchCollectionViewController: SearchObserver {
+extension ResultCollectionViewController: SearchObserver {
   func update() {
     switch searchRepository.stateManager.state {
     case .empty:

@@ -7,7 +7,6 @@
 
 import Foundation
 
-// TODO: don't show elements if some of the param is missed
 struct StoreItem: Hashable, Identifiable {
   let id = UUID()
   let name: String

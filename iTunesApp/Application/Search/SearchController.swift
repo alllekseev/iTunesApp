@@ -1,5 +1,5 @@
 //
-//  StoreSearchController.swift
+//  SearchController.swift
 //  iTunesApp
 //
 //  Created by Олег Алексеев on 14/04/2024.
@@ -7,14 +7,14 @@
 
 import UIKit
 
-final class StoreSearchController: UISearchController {
+final class SearchController: UISearchController {
 
   weak var textDelegate: SearchBarTextDelegate?
   var searchTextHandler: (() -> Void) = {}
 
   var searchRepository = SearchRepository()
   private var searchServise: iTunesSearchService
-  private var resultsController: SearchCollectionViewController
+  private var resultsController: ResultCollectionViewController
 
   private let queryOptions = SearchScope.allCases.map{ $0.mediaType }
 
@@ -22,7 +22,7 @@ final class StoreSearchController: UISearchController {
 
   init() {
     searchServise = iTunesSearchService()
-    resultsController = SearchCollectionViewController(collectionViewLayout: UICollectionViewLayout())
+    resultsController = ResultCollectionViewController(collectionViewLayout: UICollectionViewLayout())
     super.init(searchResultsController: resultsController)
     resultsController.searchRepository = searchRepository
     setupSearchBar()
@@ -63,7 +63,7 @@ final class StoreSearchController: UISearchController {
   }
 }
 
-extension StoreSearchController {
+extension SearchController {
   @objc private func fetchItems() {
     let searchTerm = searchBar.text ?? ""
     let mediaType = queryOptions[searchBar.selectedScopeButtonIndex]
@@ -78,7 +78,7 @@ extension StoreSearchController {
   }
 }
 
-extension StoreSearchController: UISearchResultsUpdating {
+extension SearchController: UISearchResultsUpdating {
   func updateSearchResults(for searchController: UISearchController) {
     NSObject.cancelPreviousPerformRequests(
       withTarget: self,
@@ -90,7 +90,7 @@ extension StoreSearchController: UISearchResultsUpdating {
   }
 }
 
-extension StoreSearchController: UISearchBarDelegate {
+extension SearchController: UISearchBarDelegate {
   func searchBar(
     _ searchBar: UISearchBar,
     selectedScopeButtonIndexDidChange selectedScope: Int

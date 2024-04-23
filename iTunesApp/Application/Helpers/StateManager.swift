@@ -11,7 +11,7 @@ enum State {
   case empty
   case loading
   case loaded([StoreItem])
-  case error(StoreAPIError)
+  case error(APIError)
 }
 
 final class StateManager {
