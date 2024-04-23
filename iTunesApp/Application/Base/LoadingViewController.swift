@@ -7,6 +7,16 @@
 
 import UIKit
 
+struct LoaderView {
+  let style: UIActivityIndicatorView.Style = .large
+
+  var loadar: UIActivityIndicatorView {
+    let indicator = UIActivityIndicatorView(style: style)
+    indicator.translatesAutoresizingMaskIntoConstraints = false
+    return indicator
+  }
+}
+
 final class LoadingViewController: UIViewController {
   let activityIndicator = UIActivityIndicatorView(style: .medium)
 

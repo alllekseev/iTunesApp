@@ -11,18 +11,18 @@ extension UIImage {
   static func fetchImage(from url: URL?) async throws -> UIImage {
 
     guard let url = url else {
-      throw APIRequestError.imageURLNotFound
+      throw StoreAPIError.notValidURL
     }
 
     let (data, response) = try await URLSession.shared.data(from: url)
 
-    guard let httpResponse = response as? HTTPURLResponse,
-          httpResponse.statusCode == 200 else {
-      throw APIRequestError.imageDataMissing
+    if let httpResponse = response as? HTTPURLResponse,
+          httpResponse.statusCode != 200 {
+      throw StoreAPIError.invalidStatusCode(statusCode: httpResponse.statusCode)
     }
 
     guard let image = UIImage(data: data) else {
-      throw APIRequestError.imageDataMissing
+      throw StoreAPIError.invalidData
     }
 
     return image

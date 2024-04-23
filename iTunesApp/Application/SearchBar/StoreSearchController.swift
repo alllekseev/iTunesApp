@@ -10,6 +10,7 @@ import UIKit
 final class StoreSearchController: UISearchController {
 
   weak var textDelegate: SearchBarTextDelegate?
+  var searchTextHandler: (() -> Void) = {}
 
   var searchRepository = SearchRepository()
   private var searchServise: iTunesSearchService
@@ -23,7 +24,9 @@ final class StoreSearchController: UISearchController {
     searchServise = iTunesSearchService()
     resultsController = SearchCollectionViewController(collectionViewLayout: UICollectionViewLayout())
     super.init(searchResultsController: resultsController)
+    resultsController.searchRepository = searchRepository
     setupSearchBar()
+    searchTextHandler()
   }
 
   required init?(coder: NSCoder) {
@@ -44,19 +47,18 @@ final class StoreSearchController: UISearchController {
       "Type you request",
       comment: "Search placeholder for search bar"
     )
-    searchBar.showsScopeBar = true
+//    searchBar.showsScopeBar = true
     searchBar.autocapitalizationType = .none
     searchBar.scopeButtonTitles = SearchScope.allCases.map { $0.title }
-    searchBar.showsScopeBar = true
 
 
-    showsSearchResultsController = true
-    automaticallyShowsSearchResultsController = true
-    obscuresBackgroundDuringPresentation = true
+//    showsSearchResultsController = true
+//    scopeBarActivation = .manual
+//    obscuresBackgroundDuringPresentation = true
   }
 
   private func setupResultsController() {
-    searchRepository.addObserver(self)
+    searchRepository.addObserver(resultsController)
     textDelegate = resultsController
   }
 }
@@ -71,11 +73,8 @@ extension StoreSearchController {
         let queryItems = QueryItems(term: searchTerm, mediaType: mediaType)
         await searchRepository.fetchMatchingItems(queryItems: queryItems)
       }
-
       self.searchTask = nil
     }
-
-
   }
 }
 
@@ -87,35 +86,40 @@ extension StoreSearchController: UISearchResultsUpdating {
       object: nil
     )
 
-    if let searchText = searchController.searchBar.text {
-      textDelegate?.searchTextDidChange(searchText)
-    }
-
     perform(#selector(fetchItems), with: nil, afterDelay: 0.3)
   }
 }
 
 extension StoreSearchController: UISearchBarDelegate {
-  func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-    searchBar.resignFirstResponder()
-    isActive = false
-  }
-
   func searchBar(
     _ searchBar: UISearchBar,
     selectedScopeButtonIndexDidChange selectedScope: Int
   ) {
     updateSearchResults(for: self)
   }
-}
 
-extension StoreSearchController: SearchObserver {
-  func searchItemsDidFetch(_ items: [StoreItem]) {
-    resultsController.searchItemsDidFetch(items)
+  func searchBarBookmarkButtonClicked(_ searchBar: UISearchBar) {
+    searchRepository.stateManager.state = .empty
   }
 
-  func searchFetchFailed(with error: Error) {
-    resultsController.searchFetchFailed(with: error)
+  func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+    searchBar.resignFirstResponder()
+    dismiss(animated: true, completion: nil)
+  }
+
+  func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+    searchBar.resignFirstResponder()
+    searchRepository.stateManager.state = .empty
+    searchBar.selectedScopeButtonIndex = 0
+    dismiss(animated: true, completion: nil)
+  }
+
+  func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+    if searchText.isEmpty || searchBar.text == nil {
+      searchTextHandler()
+    } else {
+      textDelegate?.searchTextDidChange(searchText)
+    }
   }
 }
 

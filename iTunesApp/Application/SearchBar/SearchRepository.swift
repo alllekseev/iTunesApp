@@ -8,15 +8,28 @@
 import Foundation
 
 protocol SearchObserver: AnyObject {
-  func searchItemsDidFetch(_ items: [StoreItem])
-  func searchFetchFailed(with error: Error)
+//  func searchItemsDidFetch(_ items: [StoreItem])
+  // TODO: reorganize project structure
+//  func searchFetchFailed(with error: StoreAPIError)
+
+  func update()
 }
 
 class SearchRepository {
-//  weak var delegate: SearchRepositoryDelegate?
+
+  lazy var stateManager: StateManager = {
+    StateManager { [weak self ] in
+      self?.notifyObservers()
+    }
+  }()
+
   private var searchService = iTunesSearchService()
 
   private var observers = [SearchObserver]()
+
+  init() {
+    stateManager.state = .empty
+  }
 
   func addObserver(_ observer: SearchObserver) {
     observers.append(observer)
@@ -26,16 +39,21 @@ class SearchRepository {
     observers = observers.filter { $0 !== observer }
   }
 
+  private func notifyObservers() {
+    observers.forEach { $0.update() }
+  }
+
   func fetchMatchingItems(queryItems: QueryItems) async {
     do {
+      stateManager.state = .loading
       searchService.queryItems = queryItems.queryItems
-      var items = try await searchService.fetchItems()
-      items = items.compactMap { $0 }
-      observers.forEach { $0.searchItemsDidFetch(items) }
+      let items = try await searchService.fetchItems().compactMap { $0 }
+      stateManager.state = .loaded(items)
     } catch let error as NSError where error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled {
-      // ignore cancellation error
     } catch {
-      observers.forEach { $0.searchFetchFailed(with: error) }
+      if let error = error as? StoreAPIError {
+        stateManager.state = .error(error)
+      }
     }
   }
 }
