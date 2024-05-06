@@ -1,5 +1,5 @@
 //
-//  ResultCollectionViewController.swift
+//  SearchResultsCollectionViewController.swift
 //  iTunesApp
 //
 //  Created by Олег Алексеев on 06.04.2024.
@@ -7,53 +7,36 @@
 
 import UIKit
 
-struct Item: Hashable, Identifiable {
-  let id = UUID()
-  let name: String
-}
+final class SearchResultsCollectionViewController: UICollectionViewController {
 
-final class ResultCollectionViewController: UICollectionViewController {
+  var searchRepository: SearchRepository
 
-//  enum Item: Hashable {
-//    case results(StoreItem)
-//    case error(String?)
-//  }
-
-
-
-  var searchRepository = SearchRepository()
-
-//  typealias ItemType = Item
-  typealias Snapshot = NSDiffableDataSourceSnapshot<Section, Item>
-  typealias DataSource = UICollectionViewDiffableDataSource<Section, Item>
-
-  struct SuggestionResults: Hashable, Identifiable {
-    let id = UUID()
-    let resultString: String
+  init(_ searchRepository: SearchRepository) {
+    self.searchRepository = searchRepository
+    super.init(collectionViewLayout: UICollectionViewLayout())
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
   }
 
+  typealias Snapshot = NSDiffableDataSourceSnapshot<Section, SearchSuggestion>
+  typealias DataSource = UICollectionViewDiffableDataSource<Section, SearchSuggestion>
+
   typealias Section = Int
-//  typealias ItemType = SuggestionResults
 
   let ID = "cell"
 
   var loadingIndicator = Loader().indicator
 
   var dataSource: DataSource!
-  var items = [Item]()
+  var items = [SearchSuggestion]()
   var itemsSnapshot: Snapshot {
     var snaphot = Snapshot()
     snaphot.appendSections([0])
     snaphot.appendItems(items)
     return snaphot
   }
-
-//  var errorSnapshot: Snapshot {
-//    var snaphot = Snapshot()
-//    snaphot.appendSections([1])
-//    snaphot.appendItems([.error(self.error)], toSection: 1)
-//    return snaphot
-//  }
 
   private var searchText: String = ""
 
@@ -71,12 +54,6 @@ final class ResultCollectionViewController: UICollectionViewController {
     configureDataSource()
 
     collectionView.dataSource = dataSource
-
-//    view.addSubview(loadingIndicator)
-//    NSLayoutConstraint.activate([
-//      loadingIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-//      loadingIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-//    ])
   }
 
   func configureDataSource() {
@@ -92,21 +69,6 @@ final class ResultCollectionViewController: UICollectionViewController {
       let imageConfiguration = UIImage.SymbolConfiguration(font: UIFont.systemFont(ofSize: 16))
       contentConfiguration.image = UIImage(systemName: "magnifyingglass", withConfiguration: imageConfiguration)
       contentConfiguration.imageProperties.tintColor = .systemGray
-
-
-//      switch item {
-//      case .results(let item):
-//        let resultText = item.name
-//        if let attributedText = self.attributedString(from: resultText) {
-//          contentConfiguration.attributedText = attributedText
-//        } else {
-//          contentConfiguration.text = resultText
-//        }
-//      case .error(let error):
-//        if let error = error {
-//          contentConfiguration.text = error
-//        }
-//      }
 
       let resultText = item.name
       contentConfiguration.textProperties.color = .systemGray
@@ -156,28 +118,28 @@ final class ResultCollectionViewController: UICollectionViewController {
 
 }
 
-extension ResultCollectionViewController: SearchBarTextDelegate {
+extension SearchResultsCollectionViewController: SearchBarTextDelegate {
   func searchTextDidChange(_ searchText: String) {
     self.searchText = searchText
   }
 }
 
-extension ResultCollectionViewController: SearchObserver {
+extension SearchResultsCollectionViewController: SearchRepositoryDelegate {
   func update() {
-    switch searchRepository.stateManager.state {
+    switch searchRepository.resultsStateManager.state {
     case .empty:
-//      loadingIndicator.stopAnimating()
+      loadingIndicator.stopAnimating()
       return
     case .loading:
       self.items = []
-//      loadingIndicator.startAnimating()
+      loadingIndicator.startAnimating()
     case .loaded(let items):
-//      loadingIndicator.stopAnimating()
-      self.items = items.compactMap { Item(name: $0.name) }
+      loadingIndicator.stopAnimating()
+      self.items = items.compactMap { $0 }
       dataSource.apply(itemsSnapshot, animatingDifferences: true)
     case .error:
-//      loadingIndicator.stopAnimating()
-      items.append(Item(name: self.searchText))
+      loadingIndicator.stopAnimating()
+      items.append(SearchSuggestion(name: self.searchText))
       dataSource.apply(itemsSnapshot, animatingDifferences: true)
     }
   }

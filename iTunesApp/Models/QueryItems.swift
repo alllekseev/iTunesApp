@@ -12,11 +12,23 @@ struct QueryItems {
 
   let term: String
   let mediaType: SearchScope
-  var language: Language = .english
-  let elementsAmount: Int = 30
+  var language: Language
+  var elementsAmount: Int
 
   var searchTerm: String {
     term.replacingOccurrences(of: " ", with: "+")
+  }
+
+  init(
+    term: String,
+    mediaType: SearchScope,
+    language: Language = .english,
+    elementsAmount: Int = 30
+  ) {
+    self.term = term
+    self.mediaType = mediaType
+    self.language = language
+    self.elementsAmount = elementsAmount
   }
 
   enum Language: String {

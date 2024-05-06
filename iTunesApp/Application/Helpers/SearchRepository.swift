@@ -11,44 +11,62 @@ protocol SearchObserver: AnyObject {
   func update()
 }
 
+enum ServiceType {
+  case storeItems
+  case resultItems
+}
+
 class SearchRepository {
 
-  lazy var stateManager: StateManager = {
-    StateManager { [weak self ] in
-      self?.notifyObservers()
+  weak var delegate: SearchRepositoryDelegate?
+  weak var resultsDelegate: SearchRepositoryDelegate?
+
+  lazy var storeStateManager: StateManager<StoreItem> = {
+    StateManager<StoreItem> { [weak self] in
+      self?.delegate?.update()
     }
   }()
 
-  private var searchService = iTunesSearchService()
+  lazy var resultsStateManager: StateManager<SearchSuggestion> = {
+    StateManager<SearchSuggestion> { [weak self] in
+      self?.resultsDelegate?.update()
+    }
+  }()
 
-  private var observers = [SearchObserver]()
+  private var storeSearchService = iTunesSearchService()
+  private var resultsSearchService = SuggestionResults()
 
   init() {
-    stateManager.state = .empty
+    storeStateManager.state = .empty
+    resultsStateManager.state = .empty
   }
 
-  func addObserver(_ observer: SearchObserver) {
-    observers.append(observer)
-  }
-
-  func removeObserver(_ observer: SearchObserver) {
-    observers = observers.filter { $0 !== observer }
-  }
-
-  private func notifyObservers() {
-    observers.forEach { $0.update() }
-  }
-
-  func fetchMatchingItems(queryItems: QueryItems) async {
+  func fetchMatchingItems(
+    for service: ServiceType,
+    queryItems: QueryItems
+  ) async {
     do {
-      stateManager.state = .loading
-      searchService.queryItems = queryItems.queryItems
-      let items = try await searchService.fetchItems().compactMap { $0 }
-      stateManager.state = .loaded(items)
+      switch service {
+      case .storeItems:
+        storeStateManager.state = .loading
+        storeSearchService.queryItems = queryItems.queryItems
+        let items = try await storeSearchService.fetchItems().compactMap { $0 }
+        storeStateManager.state = .loaded(items)
+      case .resultItems:
+        resultsStateManager.state = .loading
+        resultsSearchService.queryItems = queryItems.queryItems
+        let items = try await resultsSearchService.fetchItems().compactMap { $0 }
+        resultsStateManager.state = .loaded(items)
+      }
     } catch let error as NSError where error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled {
     } catch {
       if let error = error as? APIError {
-        stateManager.state = .error(error)
+        switch service {
+        case .storeItems:
+          storeStateManager.state = .error(error)
+        case .resultItems:
+          resultsStateManager.state = .error(error)
+        }
       }
     }
   }

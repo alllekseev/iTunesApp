@@ -16,3 +16,12 @@ struct iTunesSearchService: APIRequest {
 
   var queryItems: [URLQueryItem] = []
 }
+
+struct SuggestionResults: APIRequest {
+  typealias Response = SearchSuggestion
+
+  var path: Endpoints { .search }
+
+  var queryItems: [URLQueryItem] = [
+  ]
+}
