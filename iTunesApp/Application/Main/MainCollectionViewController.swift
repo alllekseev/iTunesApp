@@ -15,19 +15,19 @@ final class MainCollectionViewController: UICollectionViewController {
   typealias DataSource = UICollectionViewDiffableDataSource<String, StoreItem>
   typealias Snapshot = NSDiffableDataSourceSnapshot<String, StoreItem>
 
-  var loadingIndicator = Loader().indicator
-
-  // MARK: - Class Instances
-
-  var searchController = SearchController()
-  private lazy var errorView = ErrorView(frame: view.bounds)
-
   // MARK: - Properties
 
   var items = [StoreItem]()
-
-  // MARK: - CollectionView Elements
   var dataSource: DataSource!
+
+  // MARK: - Class Instances
+
+  var resultSearchController = SearchController()
+  var searchRepository = SearchRepository()
+  var loadingIndicator = Loader().indicator
+  private lazy var errorView = ErrorView(frame: view.bounds)
+
+  // MARK: - Snapshot
 
   var itemSnapshot: Snapshot {
     var snapshot = Snapshot()
@@ -61,6 +61,7 @@ final class MainCollectionViewController: UICollectionViewController {
 
     view.addSubview(loadingIndicator)
     view.addSubview(errorView)
+
     NSLayoutConstraint.activate([
       loadingIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
       loadingIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
@@ -68,10 +69,13 @@ final class MainCollectionViewController: UICollectionViewController {
   }
 
   // MARK: - Configure CollectionView
+
   func configureColectionView() {
-    navigationItem.searchController = searchController
+    navigationItem.searchController = resultSearchController
+//    resultSearchController.searchBar.delegate = self
+    navigationItem.hidesSearchBarWhenScrolling = false
     collectionView.collectionViewLayout = configureLayout()
-    searchController.searchRepository.addObserver(self)
+    resultSearchController.searchRepository.delegate = self
   }
 
   // MARK: - Configure Layout
@@ -111,60 +115,37 @@ final class MainCollectionViewController: UICollectionViewController {
     return UICollectionViewCompositionalLayout(section: section)
   }
 
-  private func showCollectionView(with items: [StoreItem]) {
-//    self.errorView.willMove(toParent: nil)
-//    self.errorView.view.removeFromSuperview()
-//    self.errorView.removeFromParent()
-//    view = collectionView
+  // MARK: - Screen Management
 
+  private func showCollectionView(with items: [StoreItem]) {
     errorView.isHidden = true
     self.items = items
     dataSource.apply(itemSnapshot, animatingDifferences: true)
   }
 
   private func showLoadingView() {
-//    errorView.view.isHidden = true
     errorView.isHidden = true
+    loadingIndicator.startAnimating()
   }
 
-  // FIXME: - change naming
   private func showErrorView(with message: String) {
-//    collectionView.isHidden = true
-//    errorView.view.isHidden = false
-
-//    self.addChild(self.errorView)
-//    self.view.addSubview(self.errorView.view)
-//    self.errorView.didMove(toParent: self)
-
     errorView.isHidden = false
-    navigationItem.hidesSearchBarWhenScrolling = false
 
     let errorContext = ErrorContext(message: message)
     errorView.configureController(errorContext)
   }
 }
 
-extension MainCollectionViewController: SearchObserver {
-  
-//  func searchItemsDidFetch(_ items: [StoreItem]) {
-//    state = .loading
-//    self.items = []
-//    state = items.isEmpty ? .error(.itemsNotFound) : .loaded(items)
-//  }
-//
-//  func searchFetchFailed(with error: StoreAPIError) {
-//    state = .error(error)
-//  }
+extension MainCollectionViewController: SearchRepositoryDelegate {
 
   func update() {
-    switch searchController.searchRepository.stateManager.state {
+    self.items = []
+    switch resultSearchController.searchRepository.storeStateManager.state {
     case .empty:
-//      loadingIndicator.stopAnimating()
+      loadingIndicator.stopAnimating()
       showErrorView(with: "Введи запрос")
     case .loading:
       showLoadingView()
-      loadingIndicator.startAnimating()
-      self.items = []
       dataSource.apply(itemSnapshot, animatingDifferences: true)
     case .loaded(let items):
       self.loadingIndicator.stopAnimating()

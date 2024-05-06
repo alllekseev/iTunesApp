@@ -7,25 +7,25 @@
 
 import Foundation
 
-enum State {
-  case empty
-  case loading
-  case loaded([StoreItem])
-  case error(APIError)
-}
+class StateManager<Element: Decodable> {
 
-final class StateManager {
+  enum State {
+    case empty
+    case loading
+    case loaded([Element])
+    case error(APIError)
+  }
+
+  var updateUI: (() -> Void)
 
   var state: State {
     didSet {
 
-      DispatchQueue.main.async {
-        self.updateUI()
+      DispatchQueue.main.async { [weak self] in
+        self?.updateUI()
       }
     }
   }
-
-  var updateUI: (() -> Void)
 
   init(updateUI: @escaping () -> Void) {
     self.updateUI = updateUI

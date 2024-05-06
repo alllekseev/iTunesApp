@@ -8,6 +8,8 @@
 import Foundation
 
 protocol SearchRepositoryDelegate: AnyObject {
-  func searchItemsDidFetch(_ items: [StoreItem])
-  func searchFetchFailed(with error: Error)
+//  func searchItemsDidFetch(_ items: [StoreItem])
+//  func searchFetchFailed(with error: Error)
+
+  func update()
 }
