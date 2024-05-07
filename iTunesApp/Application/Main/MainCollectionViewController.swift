@@ -118,7 +118,6 @@ final class MainCollectionViewController: UICollectionViewController {
   private func showCollectionView(with items: [StoreItem]) {
     errorView.isHidden = true
     self.items = items
-    dataSource.apply(itemSnapshot, animatingDifferences: true)
   }
 
   private func showLoadingView() {
@@ -152,6 +151,7 @@ extension MainCollectionViewController: SearchRepositoryDelegate {
       loadingIndicator.stopAnimating()
       showErrorView(with: error.customDescription)
     }
+    dataSource.apply(itemSnapshot, animatingDifferences: true)
   }
 }
 

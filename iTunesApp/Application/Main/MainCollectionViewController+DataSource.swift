@@ -15,7 +15,6 @@ extension MainCollectionViewController {
         withReuseIdentifier: MainCollectionViewCell.ID,
         for: indexPath
       ) as! MainCollectionViewCell
-      // FIXME: Remove Task from here
       self.imageLoadTask[indexPath]?.cancel()
       self.imageLoadTask[indexPath] = Task {
         try? await cell.configure(for: item)

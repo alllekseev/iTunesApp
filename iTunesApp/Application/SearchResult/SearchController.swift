@@ -63,6 +63,7 @@ final class SearchController: UISearchController {
   private func setupResultsController() {
     searchRepository.resultsDelegate = resultsController
     textDelegate = resultsController
+    resultsController.delegate = self
   }
 }
 
@@ -91,33 +92,33 @@ extension SearchController {
 }
 
 extension SearchController: UISearchBarDelegate {
-    func searchBar(
-      _ searchBar: UISearchBar,
-      selectedScopeButtonIndexDidChange selectedScope: Int
-    ) {
-      if searchBar.isFirstResponder {
-        responseData.service = .resultItems
-        responseData.elementsAmount = 10
-      } else {
-        responseData.service = .storeItems
-        responseData.elementsAmount = 30
-      }
-      updateResults()
+  func searchBar(
+    _ searchBar: UISearchBar,
+    selectedScopeButtonIndexDidChange selectedScope: Int
+  ) {
+    if searchBar.isFirstResponder {
+      responseData.service = .resultItems
+      responseData.elementsAmount = 10
+    } else {
+      responseData.service = .storeItems
+      responseData.elementsAmount = 30
     }
+    updateResults()
+  }
 
   func searchBarBookmarkButtonClicked(_ searchBar: UISearchBar) {
     searchRepository.resultsStateManager.state = .empty
     searchTextHandler()
   }
 
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-      searchBar.resignFirstResponder()
-      responseData.service = .storeItems
-      responseData.elementsAmount = 30
-      updateResults()
+  func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+    searchBar.resignFirstResponder()
+    responseData.service = .storeItems
+    responseData.elementsAmount = 30
+    updateResults()
 
-      dismiss(animated: true, completion: nil)
-    }
+    dismiss(animated: true, completion: nil)
+  }
 
   func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
     searchBar.resignFirstResponder()
@@ -138,5 +139,12 @@ extension SearchController: UISearchBarDelegate {
     responseData.elementsAmount = 10
     updateResults()
     textDelegate?.searchTextDidChange(searchText)
+  }
+}
+
+extension SearchController: CollectionViewCellDelegate {
+  func didSelectItem(with name: String) {
+    self.searchBar.text = name
+    searchBarSearchButtonClicked(self.searchBar)
   }
 }
