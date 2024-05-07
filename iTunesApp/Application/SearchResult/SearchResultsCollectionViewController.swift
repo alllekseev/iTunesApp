@@ -7,9 +7,15 @@
 
 import UIKit
 
+protocol CollectionViewCellDelegate: AnyObject {
+  func didSelectItem(with name: String)
+}
+
 final class SearchResultsCollectionViewController: UICollectionViewController {
 
   var searchRepository: SearchRepository
+
+  weak var delegate: CollectionViewCellDelegate?
 
   init(_ searchRepository: SearchRepository) {
     self.searchRepository = searchRepository
@@ -113,6 +119,7 @@ final class SearchResultsCollectionViewController: UICollectionViewController {
 
   override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     collectionView.deselectItem(at: indexPath, animated: true)
+    delegate?.didSelectItem(with: items[indexPath.row].name)
   }
 
 
