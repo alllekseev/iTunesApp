@@ -7,10 +7,6 @@
 
 import Foundation
 
-protocol SearchObserver: AnyObject {
-  func update()
-}
-
 enum ServiceType {
   case storeItems
   case resultItems
