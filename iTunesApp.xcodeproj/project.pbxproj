@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		2A11658E2BCFE2AC008C5887 /* MainCollectionViewController+DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A11658D2BCFE2AC008C5887 /* MainCollectionViewController+DataSource.swift */; };
+		2A1734242BE9214A00E1D4BA /* TestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1734232BE9214A00E1D4BA /* TestData.swift */; };
 		2A3DEB002BCBE31300D8361E /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3DEAFF2BCBE31300D8361E /* SearchController.swift */; };
 		2A3DEB022BCBF06E00D8361E /* QueryItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3DEB012BCBF06E00D8361E /* QueryItems.swift */; };
 		2A3DEB042BCBF09400D8361E /* SearchRepositoryDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3DEB032BCBF09400D8361E /* SearchRepositoryDelegate.swift */; };
@@ -43,6 +44,7 @@
 
 /* Begin PBXFileReference section */
 		2A11658D2BCFE2AC008C5887 /* MainCollectionViewController+DataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainCollectionViewController+DataSource.swift"; sourceTree = "<group>"; };
+		2A1734232BE9214A00E1D4BA /* TestData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestData.swift; sourceTree = "<group>"; };
 		2A3DEAFF2BCBE31300D8361E /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
 		2A3DEB012BCBF06E00D8361E /* QueryItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryItems.swift; sourceTree = "<group>"; };
 		2A3DEB032BCBF09400D8361E /* SearchRepositoryDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRepositoryDelegate.swift; sourceTree = "<group>"; };
@@ -89,6 +91,14 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		2A1734222BE920F900E1D4BA /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				2A1734232BE9214A00E1D4BA /* TestData.swift */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		2A3DEAFE2BCBE2DE00D8361E /* SearchResult */ = {
 			isa = PBXGroup;
 			children = (
@@ -176,6 +186,7 @@
 		2AA024DA2BBFCCF900E76693 /* Application */ = {
 			isa = PBXGroup;
 			children = (
+				2A1734222BE920F900E1D4BA /* Resources */,
 				2A9E09B22BD7CFCA00834C6E /* Helpers */,
 				2A7BC42D2BC1A20900022ACC /* Base */,
 				2AA024DE2BBFD32B00E76693 /* Main */,
@@ -315,6 +326,7 @@
 				2AA024DD2BBFCD5D00E76693 /* SearchScope.swift in Sources */,
 				2A3DEB042BCBF09400D8361E /* SearchRepositoryDelegate.swift in Sources */,
 				2A11658E2BCFE2AC008C5887 /* MainCollectionViewController+DataSource.swift in Sources */,
+				2A1734242BE9214A00E1D4BA /* TestData.swift in Sources */,
 				2AA024E12BC0117000E76693 /* StoreItem.swift in Sources */,
 				2AB268082BC9560900614982 /* CollectionViewControllerBuilder.swift in Sources */,
 				2AB2680A2BC9565100614982 /* ItemDisplaying.swift in Sources */,

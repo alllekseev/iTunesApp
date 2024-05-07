@@ -81,17 +81,14 @@ final class MainCollectionViewController: UICollectionViewController {
   // MARK: - Configure Layout
 
   func configureLayout() -> UICollectionViewLayout {
+    let sectionSpacing: CGFloat = 16
+    let innerSpacing: CGFloat = 14
+
     let itemSize = NSCollectionLayoutSize(
       widthDimension: .fractionalWidth(0.5),
-      heightDimension: .fractionalHeight(1)
+      heightDimension: .fractionalWidth(0.5)
     )
     let item = NSCollectionLayoutItem(layoutSize: itemSize)
-    item.contentInsets = NSDirectionalEdgeInsets(
-      top: 4,
-      leading: 4,
-      bottom: 4,
-      trailing: 4
-    )
 
     let groupSize = NSCollectionLayoutSize(
       widthDimension: .fractionalWidth(1),
@@ -102,15 +99,16 @@ final class MainCollectionViewController: UICollectionViewController {
       repeatingSubitem: item,
       count: 2
     )
+    group.interItemSpacing = NSCollectionLayoutSpacing.fixed(innerSpacing)
 
     let section = NSCollectionLayoutSection(group: group)
     section.contentInsets = NSDirectionalEdgeInsets(
-      top: 8,
-      leading: 8,
-      bottom: 8,
-      trailing: 8
+      top: sectionSpacing,
+      leading: sectionSpacing,
+      bottom: sectionSpacing,
+      trailing: sectionSpacing
     )
-    section.interGroupSpacing = 8
+    section.interGroupSpacing = innerSpacing
 
     return UICollectionViewCompositionalLayout(section: section)
   }
