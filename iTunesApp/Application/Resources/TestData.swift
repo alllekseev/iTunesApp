@@ -103,3 +103,15 @@ let testStoreItemsData: Data = """
   ]
 }
 """.data(using: .utf8)!
+
+let testStoreItemDetail = """
+    {
+      "artistName": "twenty one pilots",
+      "artworkUrl100": "https://is1-ssl.mzstatic.com/image/thumb/Music112/v4/91/8a/12/918a1237-5216-1dff-9ca8-47b4ca8f9822/075679926951.jpg/100x100bb.jpg",
+      "kind": "song",
+      "trackId": 974485809,
+      "longDescription": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam id arcu eget urna porta aliquet in vitae ligula. Maecenas eget turpis eget magna suscipit egestas eu a neque. Pellentesque imperdiet neque ut ligula facilisis auctor. Aliquam sit amet commodo augue, quis pretium massa. Pellentesque vel tortor eu velit ultricies posuere. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam id arcu eget urna porta aliquet in vitae ligula. Maecenas eget turpis eget magna suscipit egestas eu a neque. Pellentesque imperdiet neque ut ligula facilisis auctor. Aliquam sit amet commodo augue, quis pretium massa. Pellentesque vel tortor eu velit ultricies posuere. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam id arcu eget urna porta aliquet in vitae ligula. Maecenas eget turpis eget magna suscipit egestas eu a neque. Pellentesque imperdiet neque ut ligula facilisis auctor. Aliquam sit amet commodo augue, quis pretium massa. Pellentesque vel tortor eu velit ultricies posuere. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam id arcu eget urna porta aliquet in vitae ligula. Maecenas eget turpis eget magna suscipit egestas eu a neque. Pellentesque imperdiet neque ut ligula facilisis auctor. Aliquam sit amet commodo augue, quis pretium massa. Pellentesque vel tortor eu velit ultricies posuere. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam id arcu eget urna porta aliquet in vitae ligula. Maecenas eget turpis eget magna suscipit egestas eu a neque. Pellentesque imperdiet neque ut ligula facilisis auctor. Aliquam sit amet commodo augue, quis pretium massa. Pellentesque vel tortor eu velit ultricies posuere.",
+      "trackName": "The Judge",
+      "collectionId": 974485462
+    }
+""".data(using: .utf8)!
