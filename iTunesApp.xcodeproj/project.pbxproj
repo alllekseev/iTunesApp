@@ -15,6 +15,8 @@
 		2A3DEB062BCBF0A800D8361E /* SearchRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3DEB052BCBF0A800D8361E /* SearchRepository.swift */; };
 		2A3DEB082BCBF10E00D8361E /* SearchBarTextDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3DEB072BCBF10E00D8361E /* SearchBarTextDelegate.swift */; };
 		2A42F7ED2BC6A7590086D6F9 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A42F7EC2BC6A7590086D6F9 /* APIError.swift */; };
+		2A687ECD2BEA194C006294C3 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A687ECC2BEA194C006294C3 /* DetailViewController.swift */; };
+		2A687ECF2BEA1956006294C3 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A687ECE2BEA1956006294C3 /* DetailView.swift */; };
 		2A7864672BD15E410085A764 /* StateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A7864662BD15E410085A764 /* StateManager.swift */; };
 		2A7BC42A2BC140D100022ACC /* SearchResultsCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A7BC4292BC140D100022ACC /* SearchResultsCollectionViewController.swift */; };
 		2A9E09B62BD7D07E00834C6E /* ErrorContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A9E09B52BD7D07E00834C6E /* ErrorContext.swift */; };
@@ -51,6 +53,8 @@
 		2A3DEB052BCBF0A800D8361E /* SearchRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRepository.swift; sourceTree = "<group>"; };
 		2A3DEB072BCBF10E00D8361E /* SearchBarTextDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarTextDelegate.swift; sourceTree = "<group>"; };
 		2A42F7EC2BC6A7590086D6F9 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
+		2A687ECC2BEA194C006294C3 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		2A687ECE2BEA1956006294C3 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 		2A7864662BD15E410085A764 /* StateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateManager.swift; sourceTree = "<group>"; };
 		2A7BC4292BC140D100022ACC /* SearchResultsCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchResultsCollectionViewController.swift; sourceTree = "<group>"; };
 		2A9E09B52BD7D07E00834C6E /* ErrorContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ErrorContext.swift; sourceTree = "<group>"; };
@@ -106,6 +110,25 @@
 				2A7BC4292BC140D100022ACC /* SearchResultsCollectionViewController.swift */,
 			);
 			path = SearchResult;
+			sourceTree = "<group>";
+		};
+		2A687ECB2BEA1933006294C3 /* DetailView */ = {
+			isa = PBXGroup;
+			children = (
+				2A687ECC2BEA194C006294C3 /* DetailViewController.swift */,
+				2A687ECE2BEA1956006294C3 /* DetailView.swift */,
+			);
+			path = DetailView;
+			sourceTree = "<group>";
+		};
+		2A687ED02BEA1B7D006294C3 /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				2AA024DE2BBFD32B00E76693 /* Main */,
+				2A687ECB2BEA1933006294C3 /* DetailView */,
+				2A3DEAFE2BCBE2DE00D8361E /* SearchResult */,
+			);
+			path = Controllers;
 			sourceTree = "<group>";
 		};
 		2A7BC42D2BC1A20900022ACC /* Base */ = {
@@ -186,11 +209,10 @@
 		2AA024DA2BBFCCF900E76693 /* Application */ = {
 			isa = PBXGroup;
 			children = (
+				2A687ED02BEA1B7D006294C3 /* Controllers */,
 				2A1734222BE920F900E1D4BA /* Resources */,
 				2A9E09B22BD7CFCA00834C6E /* Helpers */,
 				2A7BC42D2BC1A20900022ACC /* Base */,
-				2AA024DE2BBFD32B00E76693 /* Main */,
-				2A3DEAFE2BCBE2DE00D8361E /* SearchResult */,
 				2AA024ED2BC0612C00E76693 /* Protocols */,
 				2AA024F02BC0638900E76693 /* Extensions */,
 				2AA024E22BC032C800E76693 /* Networking */,
@@ -342,11 +364,13 @@
 				2AA024F42BC096E500E76693 /* UIView+Extensions.swift in Sources */,
 				2AA024EC2BC0610200E76693 /* MainCollectionViewCell.swift in Sources */,
 				2A3DEB002BCBE31300D8361E /* SearchController.swift in Sources */,
+				2A687ECD2BEA194C006294C3 /* DetailViewController.swift in Sources */,
 				2AA024FC2BC0A6ED00E76693 /* NavigationController.swift in Sources */,
 				2A3DEB062BCBF0A800D8361E /* SearchRepository.swift in Sources */,
 				2AA024E42BC032E500E76693 /* APIRequest.swift in Sources */,
 				2A9E09B82BD811B100834C6E /* SearchSuggestion.swift in Sources */,
 				2A3DEB082BCBF10E00D8361E /* SearchBarTextDelegate.swift in Sources */,
+				2A687ECF2BEA1956006294C3 /* DetailView.swift in Sources */,
 				2A3DEB022BCBF06E00D8361E /* QueryItems.swift in Sources */,
 				2AA024E82BC03F5700E76693 /* APIService.swift in Sources */,
 				2A7BC42A2BC140D100022ACC /* SearchResultsCollectionViewController.swift in Sources */,

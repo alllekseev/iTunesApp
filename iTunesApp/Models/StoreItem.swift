@@ -32,11 +32,18 @@ struct StoreItem: Hashable, Identifiable {
     case collectionName = "collectionName"
   }
 
-  static var testData: [StoreItem] {
+  static var testItems: [StoreItem] {
     guard let data = try? JSONDecoder().decode(SearchResponse<StoreItem>.self, from: testStoreItemsData) else {
       return []
     }
     return data.results
+  }
+
+  static var testItemDetail: StoreItem? {
+    guard let data = try? JSONDecoder().decode(StoreItem.self, from: testStoreItemDetail) else {
+      return nil
+    }
+    return data
   }
 }
 

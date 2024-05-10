@@ -54,6 +54,11 @@ final class MainCollectionViewController: UICollectionViewController {
     prepareUI()
   }
 
+  override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+    let vc = DetailViewController(itemDetails: items[indexPath.item])
+    navigationController?.pushViewController(vc, animated: true)
+  }
+
   // MARK: - Prepare UI
 
   func prepareUI() {
@@ -78,7 +83,7 @@ final class MainCollectionViewController: UICollectionViewController {
     resultSearchController.searchRepository.delegate = self
   }
 
-  // MARK: - Configure Layout
+  // MARK: - Layout
 
   func configureLayout() -> UICollectionViewLayout {
     let sectionSpacing: CGFloat = 16

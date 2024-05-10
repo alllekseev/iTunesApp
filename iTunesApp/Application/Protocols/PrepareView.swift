@@ -7,6 +7,7 @@
 
 import Foundation
 
+// TODO: add method configureAppearance and check in all classes
 protocol PrepareView {
   func setupViews()
   func configureConstraints()
