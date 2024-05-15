@@ -7,6 +7,8 @@
 
 import UIKit
 
+
+/* The Vision of Hell `app` */
 // TODO: create initializer
 final class MainCollectionViewController: UICollectionViewController {
 
@@ -24,7 +26,7 @@ final class MainCollectionViewController: UICollectionViewController {
 
   var resultSearchController = SearchController()
   var searchRepository = SearchRepository()
-  var loadingIndicator = Loader().indicator
+  lazy var activityIndicator = ActivityIndicator(view: view, style: .large)
   private lazy var errorView = ErrorView(frame: view.bounds)
 
   // MARK: - Snapshot
@@ -63,14 +65,7 @@ final class MainCollectionViewController: UICollectionViewController {
 
   func prepareUI() {
     collectionView.backgroundColor = .systemBackground
-
-    view.addSubview(loadingIndicator)
     view.addSubview(errorView)
-
-    NSLayoutConstraint.activate([
-      loadingIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-      loadingIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-    ])
   }
 
   // MARK: - Configure CollectionView
@@ -127,7 +122,7 @@ final class MainCollectionViewController: UICollectionViewController {
 
   private func showLoadingView() {
     errorView.isHidden = true
-    loadingIndicator.startAnimating()
+    activityIndicator.showIndicator()
   }
 
   private func showErrorView(with message: String) {
@@ -144,16 +139,15 @@ extension MainCollectionViewController: SearchRepositoryDelegate {
     self.items = []
     switch resultSearchController.searchRepository.storeStateManager.state {
     case .empty:
-      loadingIndicator.stopAnimating()
+      activityIndicator.hideIndicator()
       showErrorView(with: "Введи запрос")
     case .loading:
       showLoadingView()
-      dataSource.apply(itemSnapshot, animatingDifferences: true)
     case .loaded(let items):
-      self.loadingIndicator.stopAnimating()
+      self.activityIndicator.hideIndicator()
       self.showCollectionView(with: items)
     case .error(let error):
-      loadingIndicator.stopAnimating()
+      activityIndicator.hideIndicator()
       showErrorView(with: error.customDescription)
     }
     dataSource.apply(itemSnapshot, animatingDifferences: true)

@@ -43,8 +43,6 @@ final class ErrorView: UIView {
     fatalError("init(coder:) has not been implemented")
   }
   
-
-
   func configureController(_ context: ErrorContext) {
     DispatchQueue.main.async {
       self.iconImageView.image = UIImage(

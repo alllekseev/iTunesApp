@@ -142,7 +142,7 @@ extension SearchController: UISearchBarDelegate {
   }
 }
 
-extension SearchController: CollectionViewCellDelegate {
+extension SearchController: SearchResultsCellDelegate {
   func didSelectItem(with name: String) {
     self.searchBar.text = name
     searchBarSearchButtonClicked(self.searchBar)

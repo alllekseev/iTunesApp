@@ -8,13 +8,10 @@
 import UIKit
 
 // TODO: add title in navigation bar while scrolling
-protocol DetailViewDelegate: AnyObject {
-  func openLink()
-}
 
 final class DetailView: UIView {
 
-  weak var delegate: DetailViewDelegate?
+  weak var delegate: OpenLinkDelegate?
 
   private var scrollView = UIScrollView()
 
@@ -59,12 +56,14 @@ final class DetailView: UIView {
     return stackView
   }()
 
-
   private let itemImageView: UIImageView = {
     let imageView = UIImageView()
     imageView.contentMode = .scaleAspectFill
     imageView.layer.cornerRadius = 20
     imageView.layer.masksToBounds = true
+    imageView.layer.borderWidth = 0.5
+    imageView.layer.borderColor = UIColor.border.cgColor
+    imageView.image = UIImage(systemName: "rectangle")!
     return imageView
   }()
 
@@ -90,11 +89,13 @@ final class DetailView: UIView {
     return label
   }()
 
-  init(itemDetails: StoreItem, image: UIImage) {
+  init(itemDetails: StoreItem) {
     super.init(frame: .zero)
     prepareUI()
 
-    itemImageView.image = image
+    if let url = itemDetails.artworkURL {
+      itemImageView.loadImage(from: url as NSURL, item: itemDetails)
+    }
     nameLabel.text = itemDetails.name
     typeContentLabel.text = itemDetails.kind
     authorNameLabel.text = itemDetails.artist

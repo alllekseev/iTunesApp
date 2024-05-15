@@ -7,7 +7,7 @@
 
 import UIKit
 
-protocol CollectionViewCellDelegate: AnyObject {
+protocol SearchResultsCellDelegate: AnyObject {
   func didSelectItem(with name: String)
 }
 
@@ -15,7 +15,7 @@ final class SearchResultsCollectionViewController: UICollectionViewController {
 
   var searchRepository: SearchRepository
 
-  weak var delegate: CollectionViewCellDelegate?
+  weak var delegate: SearchResultsCellDelegate?
 
   init(_ searchRepository: SearchRepository) {
     self.searchRepository = searchRepository
@@ -32,8 +32,6 @@ final class SearchResultsCollectionViewController: UICollectionViewController {
   typealias Section = Int
 
   let ID = "cell"
-
-  var loadingIndicator = Loader().indicator
 
   var dataSource: DataSource!
   var items = [SearchSuggestion]()
@@ -133,21 +131,14 @@ extension SearchResultsCollectionViewController: SearchBarTextDelegate {
 
 extension SearchResultsCollectionViewController: SearchRepositoryDelegate {
   func update() {
+
     switch searchRepository.resultsStateManager.state {
-    case .empty:
-      loadingIndicator.stopAnimating()
-      return
-    case .loading:
-      self.items = []
-      loadingIndicator.startAnimating()
-    case .loaded(let items):
-      loadingIndicator.stopAnimating()
-      self.items = items.compactMap { $0 }
-      dataSource.apply(itemsSnapshot, animatingDifferences: true)
-    case .error:
-      loadingIndicator.stopAnimating()
-      items.append(SearchSuggestion(name: self.searchText))
-      dataSource.apply(itemsSnapshot, animatingDifferences: true)
+    case .empty: return
+    case .loading: self.items = []
+    case .loaded(let items): self.items = items.compactMap { $0 }
+    case .error: items.append(SearchSuggestion(name: self.searchText))
     }
+
+    dataSource.apply(itemsSnapshot, animatingDifferences: true)
   }
 }

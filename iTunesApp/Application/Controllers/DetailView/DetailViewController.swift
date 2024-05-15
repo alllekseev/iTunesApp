@@ -11,29 +11,13 @@ final class DetailViewController: UIViewController {
 
   private var itemDetails: StoreItem
   private var image: UIImage?
-//  private let loader = Loader().indicator
-//  private var stateManager = StateManager<Data> {
-//
-//  }
 
   var imageTask: Task<Void, Never>?
-  lazy var detailView: DetailView = {
-    imageTask?.cancel()
-    imageTask = Task {
-      do {
-        guard let url = itemDetails.artworkURL else { return }
-        try await loadImage(from: url)
-      } catch {
-
-      }
-      imageTask = nil
-    }
-    let view = DetailView(itemDetails: itemDetails, image: image ?? UIImage(systemName: "photo")!)
-    return view
-  }()
+  let detailView: DetailView
 
   init(itemDetails: StoreItem) {
     self.itemDetails = itemDetails
+    self.detailView = DetailView(itemDetails: itemDetails)
     super.init(nibName: nil, bundle: nil)
   }
   
@@ -44,24 +28,11 @@ final class DetailViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     prepareUI()
-
     detailView.delegate = self
-  }
-
-  @MainActor
-  func loadImage(from url: URL) async throws {
-    do {
-      let image = try await UIImage.fetchImage(from: url)
-      self.image = image
-    } catch let error as NSError where error.domain == NSURLErrorDomain && error.code == NSURLErrorCancelled {
-      // ignore cancelation errors
-    } catch {
-      throw APIError.unknownError(error: error)
-    }
   }
 }
 
-extension DetailViewController: DetailViewDelegate {
+extension DetailViewController: OpenLinkDelegate {
   func openLink() {
     print("linked: \(String(describing: itemDetails.artworkURL)) open")
   }

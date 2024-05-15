@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class MainCollectionViewCell: UICollectionViewCell, ItemDisplaying {
+final class MainCollectionViewCell: UICollectionViewCell {
 
   static let ID = String(describing: MainCollectionViewCell.self)
 
@@ -64,6 +64,15 @@ final class MainCollectionViewCell: UICollectionViewCell, ItemDisplaying {
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
+
+  func configure(for item: StoreItem) {
+    titleLabel.text = item.name
+    detailLabel.text = item.artist
+
+    if let url = item.artworkURL {
+      itemImageView.loadImage(from: url as NSURL, item: item)
+    }
+  }
 }
 
 extension MainCollectionViewCell: PrepareView {
@@ -100,6 +109,8 @@ extension MainCollectionViewCell: PrepareView {
   func configureCellAppearance() {
     layer.cornerRadius = 14
     layer.masksToBounds = true
+    layer.borderColor = UIColor.border.cgColor
+    layer.borderWidth = 0.5
     backgroundView = itemImageView
   }
 }
