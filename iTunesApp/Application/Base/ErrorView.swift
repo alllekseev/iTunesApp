@@ -20,14 +20,14 @@ final class ErrorView: UIView {
 
   private var iconImageView: UIImageView = {
     let imageView = UIImageView()
-    imageView.tintColor = .systemGray
+    imageView.tintColor = .textLight
     return imageView
   }()
 
   private var messageLabel: UILabel = {
     let label = UILabel()
     label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-    label.textColor = .systemGray
+    label.textColor = .textLight
     label.numberOfLines = 0
     label.textAlignment = .center
     return label
@@ -64,10 +64,8 @@ extension ErrorView: PrepareView {
   
   func configureConstraints() {
     NSLayoutConstraint.activate([
-//      stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
       stackView.centerYAnchor.constraint(equalTo: centerYAnchor),
       stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-//      stackView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -16),
       stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16),
     ])
   }

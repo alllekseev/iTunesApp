@@ -11,48 +11,52 @@ final class MainCollectionViewCell: UICollectionViewCell {
 
   static let ID = String(describing: MainCollectionViewCell.self)
 
-  private lazy var textGradientContainer: UIView = {
-    let view = UIView(frame: CGRect(x: 0, y: 0.5, width: self.bounds.width, height: self.bounds.height))
-
-    let gradient = CAGradientLayer()
-    gradient.frame = view.bounds
-    gradient.startPoint = CGPoint(x: 0.5, y: 0)
-    gradient.endPoint = CGPoint(x: 0.5, y: 1)
-    gradient.colors = [
-      UIColor.black.withAlphaComponent(0.0).cgColor,
-      UIColor.black.withAlphaComponent(0.5).cgColor
-    ]
-    gradient.locations = [0.0, 0.6]
-
-    view.layer.insertSublayer(gradient, at: 0)
-    return view
-  }()
+  private struct Constants {
+    static let stackViewSpacing: CGFloat = 2
+    static let imageSize: CGFloat = 64
+    static let systemFontSize: CGFloat = 16
+    static let cellCornerRadius: CGFloat = 14
+    static let verticalMargin: CGFloat = 20
+    static let horizontalMargin: CGFloat = 16
+    static let cellBorderWidht: CGFloat = 1
+  }
 
   private var stackView: UIStackView = {
     let stackView = UIStackView()
     stackView.axis = .vertical
-    stackView.alignment = .leading
+    stackView.alignment = .center
     stackView.distribution = .fillEqually
-    stackView.spacing = 2
+    stackView.spacing = Constants.stackViewSpacing
     return stackView
   }()
 
-  lazy var itemImageView: UIImageView = {
-    let imageView = UIImageView()
+  private var itemImageView: UIImageView = {
+    let imageView = UIImageView(
+      frame: CGRect(
+        x: 0,
+        y: 0,
+        width: Constants.imageSize,
+        height: Constants.imageSize
+      )
+    )
+    imageView.backgroundColor = .systemBackground
+    imageView.layer.cornerRadius = imageView.frame.height / 2
+    imageView.clipsToBounds = true
+    imageView.contentMode = .scaleAspectFill
     return imageView
   }()
 
-  var titleLabel: UILabel = {
+  private var titleLabel: UILabel = {
     let label = UILabel()
-    label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-    label.textColor = .white
+    label.font = UIFont.systemFont(ofSize: Constants.systemFontSize, weight: .medium)
+    label.textColor = .text
     return label
   }()
 
-  var detailLabel: UILabel = {
+  private var authorLabel: UILabel = {
     let label = UILabel()
-    label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-    label.textColor = .white.withAlphaComponent(0.8)
+    label.font = UIFont.systemFont(ofSize: Constants.systemFontSize, weight: .regular)
+    label.textColor = .textLight
     return label
   }()
 
@@ -67,7 +71,7 @@ final class MainCollectionViewCell: UICollectionViewCell {
 
   func configure(for item: StoreItem) {
     titleLabel.text = item.name
-    detailLabel.text = item.artist
+    authorLabel.text = item.artist
 
     if let url = item.artworkURL {
       itemImageView.loadImage(from: url as NSURL, item: item)
@@ -81,36 +85,39 @@ extension MainCollectionViewCell: PrepareView {
     setupViews()
     configureConstraints()
     configureCellAppearance()
+
+    registerForTraitChanges([UITraitUserInterfaceStyle.self]) { (self: Self, previousTraitCollection) in
+      self.layer.borderColor = UIColor.border.cgColor
+    }
   }
 
   func setupViews() {
     stackView.addArrangedSubview(titleLabel)
-    stackView.addArrangedSubview(detailLabel)
+    stackView.addArrangedSubview(authorLabel)
 
-    textGradientContainer.setupView(stackView)
-
-    setupView(textGradientContainer)
+    setupView(itemImageView)
+    setupView(stackView)
   }
 
   func configureConstraints() {
     NSLayoutConstraint.activate([
-      textGradientContainer.topAnchor.constraint(equalTo: topAnchor, constant: 81),
-      textGradientContainer.bottomAnchor.constraint(equalTo: bottomAnchor),
-      textGradientContainer.widthAnchor.constraint(equalTo: widthAnchor),
-      textGradientContainer.centerXAnchor.constraint(equalTo: centerXAnchor),
 
-      stackView.topAnchor.constraint(equalTo: textGradientContainer.topAnchor, constant: 20),
-      stackView.leadingAnchor.constraint(equalTo: textGradientContainer.leadingAnchor, constant: 16),
-      stackView.bottomAnchor.constraint(equalTo: textGradientContainer.bottomAnchor, constant: -20),
-      stackView.trailingAnchor.constraint(equalTo: textGradientContainer.trailingAnchor, constant: -16)
+      itemImageView.topAnchor.constraint(equalTo: topAnchor, constant: Constants.verticalMargin),
+      itemImageView.centerXAnchor.constraint(equalTo: centerXAnchor),
+      itemImageView.widthAnchor.constraint(equalToConstant: Constants.imageSize),
+      itemImageView.heightAnchor.constraint(equalToConstant: Constants.imageSize),
+
+      stackView.topAnchor.constraint(equalTo: itemImageView.bottomAnchor, constant: Constants.verticalMargin),
+      stackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: Constants.horizontalMargin),
+      stackView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -Constants.verticalMargin),
+      stackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -Constants.horizontalMargin)
     ])
   }
 
   func configureCellAppearance() {
-    layer.cornerRadius = 14
-    layer.masksToBounds = true
-    layer.borderColor = UIColor.border.cgColor
-    layer.borderWidth = 0.5
-    backgroundView = itemImageView
+    backgroundColor = .itemBackground
+    layer.cornerRadius = Constants.cellCornerRadius
+    layer.borderWidth = Constants.cellBorderWidht
+    self.layer.borderColor = UIColor.border.cgColor
   }
 }

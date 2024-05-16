@@ -99,8 +99,11 @@ final class DetailView: UIView {
     nameLabel.text = itemDetails.name
     typeContentLabel.text = itemDetails.kind
     authorNameLabel.text = itemDetails.artist
-    descriptionHeaderLabel.text = NSLocalizedString("Описание", comment: "header for detail block of items")
-    descriptionTextLabel.text = itemDetails.description
+
+    if !itemDetails.description.isEmpty {
+      descriptionHeaderLabel.text = NSLocalizedString("Описание", comment: "header for detail block of items")
+      descriptionTextLabel.text = itemDetails.description
+    }
   }
   
   required init?(coder: NSCoder) {

@@ -24,8 +24,8 @@ final class MainCollectionViewController: UICollectionViewController {
 
   // MARK: - Class Instances
 
-  var resultSearchController = SearchController()
-  var searchRepository = SearchRepository()
+  var searchController = SearchController()
+  var searchRepository: SearchRepository
   lazy var activityIndicator = ActivityIndicator(view: view, style: .large)
   private lazy var errorView = ErrorView(frame: view.bounds)
 
@@ -41,6 +41,17 @@ final class MainCollectionViewController: UICollectionViewController {
   // FIXME: - add AsyncSequence
   var imageLoadTask: [IndexPath: Task<Void, Never>] = [:]
 
+  //MARK: - Initializer
+
+  override init(collectionViewLayout: UICollectionViewLayout) {
+    searchRepository = searchController.searchRepository
+    super.init(collectionViewLayout: collectionViewLayout)
+  }
+  
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
+  
   // MARK: - viewDidLoad
 
   override func viewDidLoad() {
@@ -71,11 +82,11 @@ final class MainCollectionViewController: UICollectionViewController {
   // MARK: - Configure CollectionView
 
   func configureColectionView() {
-    navigationItem.searchController = resultSearchController
+    navigationItem.searchController = searchController
 //    resultSearchController.searchBar.delegate = self
     navigationItem.hidesSearchBarWhenScrolling = false
     collectionView.collectionViewLayout = configureLayout()
-    resultSearchController.searchRepository.delegate = self
+    searchController.searchRepository.delegate = self
   }
 
   // MARK: - Layout
@@ -137,7 +148,7 @@ extension MainCollectionViewController: SearchRepositoryDelegate {
 
   func update() {
     self.items = []
-    switch resultSearchController.searchRepository.storeStateManager.state {
+    switch searchController.searchRepository.storeStateManager.state {
     case .empty:
       activityIndicator.hideIndicator()
       showErrorView(with: "Введи запрос")
@@ -159,17 +170,6 @@ extension MainCollectionViewController: SearchRepositoryDelegate {
  func showContentsWebSite(with url: URL) {
          webViewController = SFSafariViewController(url: url)
          present(webViewController, animated: true, completion: nil)
-
-     }
- */
-
-// MARK: - open detail view
-/*
- func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
-         let musicItem = self.searchViewModel.searhResults[indexPath.row]
-
-         self.performSegue(withIdentifier: "PreviewMusic_Identifier", sender: musicItem)
 
      }
  */
