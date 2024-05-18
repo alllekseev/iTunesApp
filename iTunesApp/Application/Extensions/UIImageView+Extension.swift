@@ -29,8 +29,7 @@ extension UIImageView {
 
       activityIndicator.hideIndicator()
 
-      if let image = image,
-          image != fetchedItem.artworkImage {
+      if let image = image {
         self.image = image
       } else {
         self.image = UIImageView.imageCache.placeholderImage

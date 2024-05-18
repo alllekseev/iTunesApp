@@ -5,7 +5,7 @@
 //  Created by Олег Алексеев on 05.04.2024.
 //
 
-import UIKit
+import Foundation
 
 struct StoreItem: Hashable, Identifiable {
   let id = UUID()
@@ -14,7 +14,6 @@ struct StoreItem: Hashable, Identifiable {
   let kind: String
   let description: String
   var artworkURL: URL?
-  var artworkImage: UIImage?
   let trackId: Int?
   let collectionId: Int?
 
@@ -84,3 +83,11 @@ extension StoreItem {
     return data
   }
 }
+
+/*
+
+ Showing All Messages
+ Multiple commands produce '/Users/alekseev.o/Library/Developer/Xcode/DerivedData/iTunesApp-gdgyivizggxvggewxuvevbwcnohf/Build/Intermediates.noindex/iTunesApp.build/Debug-iphoneos/iTunesApp.build/Objects-normal/arm64/SearchHistory+CoreDataClass.o'
+
+
+ */

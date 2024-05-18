@@ -9,12 +9,16 @@
 /* Begin PBXBuildFile section */
 		2A11658E2BCFE2AC008C5887 /* MainCollectionViewController+DataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A11658D2BCFE2AC008C5887 /* MainCollectionViewController+DataSource.swift */; };
 		2A1734242BE9214A00E1D4BA /* TestData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A1734232BE9214A00E1D4BA /* TestData.swift */; };
+		2A31AB2F2BF8BE82006516B0 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A31AB2E2BF8BE82006516B0 /* CoreDataManager.swift */; };
+		2A31AB362BF8E1A4006516B0 /* SearchHistory+CoreDataClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A31AB342BF8E1A4006516B0 /* SearchHistory+CoreDataClass.swift */; };
+		2A31AB372BF8E1A4006516B0 /* SearchHistory+CoreDataProperties.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A31AB352BF8E1A4006516B0 /* SearchHistory+CoreDataProperties.swift */; };
 		2A3DEB002BCBE31300D8361E /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3DEAFF2BCBE31300D8361E /* SearchController.swift */; };
 		2A3DEB022BCBF06E00D8361E /* QueryItems.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3DEB012BCBF06E00D8361E /* QueryItems.swift */; };
 		2A3DEB042BCBF09400D8361E /* SearchRepositoryDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3DEB032BCBF09400D8361E /* SearchRepositoryDelegate.swift */; };
 		2A3DEB062BCBF0A800D8361E /* SearchRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3DEB052BCBF0A800D8361E /* SearchRepository.swift */; };
 		2A3DEB082BCBF10E00D8361E /* SearchBarTextDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A3DEB072BCBF10E00D8361E /* SearchBarTextDelegate.swift */; };
 		2A42F7ED2BC6A7590086D6F9 /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A42F7EC2BC6A7590086D6F9 /* APIError.swift */; };
+		2A59EB932BF7A5D800D7492E /* HistoryCoreData.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 2A59EB912BF7A5D800D7492E /* HistoryCoreData.xcdatamodeld */; };
 		2A687ECD2BEA194C006294C3 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A687ECC2BEA194C006294C3 /* DetailViewController.swift */; };
 		2A687ECF2BEA1956006294C3 /* DetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A687ECE2BEA1956006294C3 /* DetailView.swift */; };
 		2A7864672BD15E410085A764 /* StateManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2A7864662BD15E410085A764 /* StateManager.swift */; };
@@ -49,12 +53,16 @@
 /* Begin PBXFileReference section */
 		2A11658D2BCFE2AC008C5887 /* MainCollectionViewController+DataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MainCollectionViewController+DataSource.swift"; sourceTree = "<group>"; };
 		2A1734232BE9214A00E1D4BA /* TestData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestData.swift; sourceTree = "<group>"; };
+		2A31AB2E2BF8BE82006516B0 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		2A31AB342BF8E1A4006516B0 /* SearchHistory+CoreDataClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchHistory+CoreDataClass.swift"; sourceTree = SOURCE_ROOT; };
+		2A31AB352BF8E1A4006516B0 /* SearchHistory+CoreDataProperties.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SearchHistory+CoreDataProperties.swift"; sourceTree = SOURCE_ROOT; };
 		2A3DEAFF2BCBE31300D8361E /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
 		2A3DEB012BCBF06E00D8361E /* QueryItems.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = QueryItems.swift; sourceTree = "<group>"; };
 		2A3DEB032BCBF09400D8361E /* SearchRepositoryDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRepositoryDelegate.swift; sourceTree = "<group>"; };
 		2A3DEB052BCBF0A800D8361E /* SearchRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRepository.swift; sourceTree = "<group>"; };
 		2A3DEB072BCBF10E00D8361E /* SearchBarTextDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarTextDelegate.swift; sourceTree = "<group>"; };
 		2A42F7EC2BC6A7590086D6F9 /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
+		2A59EB922BF7A5D800D7492E /* HistoryCoreData.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = HistoryCoreData.xcdatamodel; sourceTree = "<group>"; };
 		2A687ECC2BEA194C006294C3 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
 		2A687ECE2BEA1956006294C3 /* DetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailView.swift; sourceTree = "<group>"; };
 		2A7864662BD15E410085A764 /* StateManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateManager.swift; sourceTree = "<group>"; };
@@ -116,6 +124,17 @@
 			path = SearchResult;
 			sourceTree = "<group>";
 		};
+		2A5B1FD42BF72A0F0006C3AB /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				2A31AB342BF8E1A4006516B0 /* SearchHistory+CoreDataClass.swift */,
+				2A31AB352BF8E1A4006516B0 /* SearchHistory+CoreDataProperties.swift */,
+				2A59EB912BF7A5D800D7492E /* HistoryCoreData.xcdatamodeld */,
+				2A31AB2E2BF8BE82006516B0 /* CoreDataManager.swift */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
 		2A687ECB2BEA1933006294C3 /* DetailView */ = {
 			isa = PBXGroup;
 			children = (
@@ -161,7 +180,6 @@
 			isa = PBXGroup;
 			children = (
 				2AA024D52BBFC2A900E76693 /* .gitignore */,
-				2A687EC82BEA040A006294C3 /* History.xcdatamodeld */,
 				2AA024C02BBFC29200E76693 /* iTunesApp */,
 				2AA024BF2BBFC29200E76693 /* Products */,
 			);
@@ -178,6 +196,7 @@
 		2AA024C02BBFC29200E76693 /* iTunesApp */ = {
 			isa = PBXGroup;
 			children = (
+				2A5B1FD42BF72A0F0006C3AB /* CoreData */,
 				2AA024DA2BBFCCF900E76693 /* Application */,
 				2AA024D92BBFCCEF00E76693 /* Assets */,
 				2AA024D72BBFCCBD00E76693 /* Bootstrap */,
@@ -358,6 +377,7 @@
 				2A3DEB042BCBF09400D8361E /* SearchRepositoryDelegate.swift in Sources */,
 				2A11658E2BCFE2AC008C5887 /* MainCollectionViewController+DataSource.swift in Sources */,
 				2A1734242BE9214A00E1D4BA /* TestData.swift in Sources */,
+				2A31AB372BF8E1A4006516B0 /* SearchHistory+CoreDataProperties.swift in Sources */,
 				2AA024E12BC0117000E76693 /* StoreItem.swift in Sources */,
 				2AB268082BC9560900614982 /* CollectionViewControllerBuilder.swift in Sources */,
 				2AA024F22BC0639800E76693 /* UIImage+Extension.swift in Sources */,
@@ -369,9 +389,12 @@
 				2AA024F62BC097FC00E76693 /* PrepareView.swift in Sources */,
 				2AB2680E2BC9775300614982 /* ActivityIndicator.swift in Sources */,
 				2AA024C22BBFC29200E76693 /* AppDelegate.swift in Sources */,
+				2A31AB362BF8E1A4006516B0 /* SearchHistory+CoreDataClass.swift in Sources */,
+				2A59EB932BF7A5D800D7492E /* HistoryCoreData.xcdatamodeld in Sources */,
 				2AA024F42BC096E500E76693 /* UIView+Extensions.swift in Sources */,
 				2AA024EC2BC0610200E76693 /* MainCollectionViewCell.swift in Sources */,
 				2A867FD42BF4D870003674CE /* UIImageView+Extension.swift in Sources */,
+				2A31AB2F2BF8BE82006516B0 /* CoreDataManager.swift in Sources */,
 				2A3DEB002BCBE31300D8361E /* SearchController.swift in Sources */,
 				2A687ECD2BEA194C006294C3 /* DetailViewController.swift in Sources */,
 				2AA024FC2BC0A6ED00E76693 /* NavigationController.swift in Sources */,
@@ -600,11 +623,13 @@
 /* End XCConfigurationList section */
 
 /* Begin XCVersionGroup section */
-		2A687EC82BEA040A006294C3 /* History.xcdatamodeld */ = {
+		2A59EB912BF7A5D800D7492E /* HistoryCoreData.xcdatamodeld */ = {
 			isa = XCVersionGroup;
 			children = (
+				2A59EB922BF7A5D800D7492E /* HistoryCoreData.xcdatamodel */,
 			);
-			path = History.xcdatamodeld;
+			currentVersion = 2A59EB922BF7A5D800D7492E /* HistoryCoreData.xcdatamodel */;
+			path = HistoryCoreData.xcdatamodeld;
 			sourceTree = "<group>";
 			versionGroupType = wrapper.xcdatamodel;
 		};
