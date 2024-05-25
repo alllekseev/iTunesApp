@@ -74,7 +74,7 @@ final class MainCollectionViewCell: UICollectionViewCell {
     authorLabel.text = item.artist
 
     if let url = item.artworkURL {
-      itemImageView.loadImage(from: url as NSURL, item: item)
+      itemImageView.loadImage(from: url as NSURL)
     }
   }
 }

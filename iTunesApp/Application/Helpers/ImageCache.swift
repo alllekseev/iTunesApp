@@ -12,7 +12,7 @@ final class ImageCache {
 
   var placeholderImage = UIImage(systemName: "rectangle")!
   private let cachedImages = NSCache<NSURL, UIImage>()
-  private var loadingResponses = [NSURL: [(StoreItem, UIImage?) -> Void]]()
+  private var loadingResponses = [NSURL: [(UIImage?) -> Void]]()
 
   func image(url: NSURL) -> UIImage? {
     cachedImages.object(forKey: url)
@@ -20,12 +20,12 @@ final class ImageCache {
 
   func load(
     url: NSURL,
-    item: StoreItem,
-    completion: @escaping (StoreItem, UIImage?) -> Void
+//    item: T,
+    completion: @escaping (UIImage?) -> Void
   ) {
     if let cachedImage = image(url: url) {
       DispatchQueue.main.async {
-        completion(item, cachedImage)
+        completion(cachedImage)
       }
       return
     }
@@ -46,7 +46,7 @@ final class ImageCache {
             let blocks = self.loadingResponses[url],
             error == nil else {
         DispatchQueue.main.async {
-          completion(item, nil)
+          completion(nil)
         }
         return
       }
@@ -55,7 +55,7 @@ final class ImageCache {
 
       for block in blocks {
         DispatchQueue.main.async {
-          block(item, image)
+          block(image)
         }
       }
 

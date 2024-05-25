@@ -10,18 +10,19 @@ import CoreData
 
 final class CoreDataStack {
 
-  let persistentContainer: NSPersistentContainer
+  static let shared = CoreDataStack()
 
-  var context: NSManagedObjectContext { persistentContainer.viewContext }
-
-  init(modelName: CoreDataModelNames) {
-    persistentContainer = NSPersistentContainer(name: modelName.rawValue)
-    persistentContainer.loadPersistentStores { storeDescription, error in
+  lazy var persistentContainer: NSPersistentContainer = {
+    let container =  NSPersistentContainer(name: CoreDataModelNames.searchHistory.rawValue)
+    container.loadPersistentStores { storeDescription, error in
       if let error = error as NSError? {
         fatalError("Unresolved error \(error), \(error.userInfo)")
       }
     }
-  }
+    return container
+  }()
+
+  var context: NSManagedObjectContext { persistentContainer.viewContext }
 
   func saveContext() {
     if context.hasChanges {
@@ -33,4 +34,6 @@ final class CoreDataStack {
       }
     }
   }
+
+
 }

@@ -8,6 +8,9 @@
 import UIKit
 
 
+
+
+
 /* The Vision of Hell `app` */
 // TODO: create initializer
 final class MainCollectionViewController: UICollectionViewController {
@@ -24,6 +27,7 @@ final class MainCollectionViewController: UICollectionViewController {
 
   // MARK: - Class Instances
 
+  private let dataManager = DataManager()
   var searchController = SearchController()
   var searchRepository: SearchRepository
   lazy var activityIndicator = ActivityIndicator(view: view, style: .large)
@@ -69,6 +73,7 @@ final class MainCollectionViewController: UICollectionViewController {
 
   override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     let vc = DetailViewController(itemDetails: items[indexPath.item])
+    dataManager.save(item: items[indexPath.item])
     navigationController?.pushViewController(vc, animated: true)
   }
 

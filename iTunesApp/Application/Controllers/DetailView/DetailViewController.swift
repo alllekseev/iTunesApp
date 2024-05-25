@@ -34,7 +34,7 @@ final class DetailViewController: UIViewController {
 
 extension DetailViewController: OpenLinkDelegate {
   func openLink() {
-    print("linked: \(String(describing: itemDetails.artworkURL)) open")
+    
   }
 }
 

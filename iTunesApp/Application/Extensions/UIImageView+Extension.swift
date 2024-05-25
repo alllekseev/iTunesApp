@@ -10,18 +10,14 @@ import UIKit
 extension UIImageView {
   private static let imageCache = ImageCache.shared
 
-  func loadImage(
-    from url: NSURL,
-    item: StoreItem
-  ) {
+  func loadImage(from url: NSURL) {
     let activityIndicator = ActivityIndicator(view: self)
     self.image = nil
     activityIndicator.showIndicator()
 
     UIImageView.imageCache.load(
-      url: url,
-      item: item
-    ) { [weak self] (fetchedItem, image) in
+      url: url
+    ) { [weak self] image in
       guard let self = self else {
         activityIndicator.hideIndicator()
         return

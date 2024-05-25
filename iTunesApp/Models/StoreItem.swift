@@ -8,14 +8,15 @@
 import Foundation
 
 struct StoreItem: Hashable, Identifiable {
+  
   let id = UUID()
   let name: String
   let artist: String
   let kind: String
   let description: String
   var artworkURL: URL?
-  let trackId: Int?
-  let collectionId: Int?
+  var trackId: Int?
+  var collectionId: Int?
 
   enum CodingKeys: String, CodingKey {
     case name = "trackName"
@@ -30,6 +31,13 @@ struct StoreItem: Hashable, Identifiable {
   enum AdditionalKeys: String, CodingKey {
     case description = "shortDescription"
     case collectionName = "collectionName"
+  }
+
+  init(name: String, artist: String, kind: String, description: String) {
+    self.name = name
+    self.artist = artist
+    self.kind = kind
+    self.description = description
   }
 
   func hash(into hasher: inout Hasher) {
@@ -83,11 +91,3 @@ extension StoreItem {
     return data
   }
 }
-
-/*
-
- Showing All Messages
- Multiple commands produce '/Users/alekseev.o/Library/Developer/Xcode/DerivedData/iTunesApp-gdgyivizggxvggewxuvevbwcnohf/Build/Intermediates.noindex/iTunesApp.build/Debug-iphoneos/iTunesApp.build/Objects-normal/arm64/SearchHistory+CoreDataClass.o'
-
-
- */

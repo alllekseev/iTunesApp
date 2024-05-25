@@ -10,14 +10,15 @@ import CoreData
 
 final class DataManager {
 
-  private let coreDataStack: CoreDataStack
-  private var searchHistory: SearchHistory?
+  private let coreDataStack = CoreDataStack.shared
 
-  init(coreDataStack: CoreDataStack) {
-    self.coreDataStack = coreDataStack
+  private func getItems() -> [SearchHistory]? {
+    let fetchRequest = SearchHistory.fetchRequest()
+    let items = try? coreDataStack.context.fetch(fetchRequest)
+    return items
   }
 
-  func save(item: StoreItem) {
+  private func create(_ item: StoreItem) {
     let newItem = SearchHistory(context: coreDataStack.context)
     newItem.id = item.id
     newItem.title = item.name
@@ -32,38 +33,40 @@ final class DataManager {
     if let collectionID = item.collectionId {
       newItem.collectionID = Int64(collectionID)
     }
+  }
 
-    let fetchRequest = SearchHistory.fetchRequest()
-
-    do {
-      var results = try coreDataStack.context.fetch(fetchRequest)
-      let count = results.count
-      if count >= 5 {
-        results.removeLast()
-        results.insert(newItem, at: 0)
-      } else {
-        results.insert(newItem, at: 0)
+  func save(item: StoreItem) {
+    if var items = getItems() {
+      guard !items.contains(where: { $0.id == item.id }) else { return }
+      if items.count >= 5 {
+        let excessItem = items.removeFirst()
+        coreDataStack.context.delete(excessItem)
       }
-//      for result in results {
-//        coreDataStack.context.insert(result)
-//      }
-    } catch {
-      print("Failed to fetch search history items: \(error)")
     }
+    create(item)
     coreDataStack.saveContext()
   }
 
-  func fetchSearchHistory() -> [SearchHistory] {
-    let fetchRequest: NSFetchRequest<SearchHistory> = SearchHistory.fetchRequest()
+  func fetchSearchHistory() -> [StoreItem] {
+    guard let items = getItems() else { return [] }
 
-    do {
-      let searchHistory = try coreDataStack.context.fetch(fetchRequest)
-      return searchHistory
-    } catch {
-      // TODO: - add logger
-      print("Failed fetching: \(error)")
-      return []
-    }
+    return items.map { historyItem in
+      var storeItem = StoreItem(
+        name: historyItem.title,
+        artist: historyItem.artistName,
+        kind: historyItem.kind,
+        description: historyItem.brief
+      )
+
+      if let urlString = historyItem.artworkURL {
+        storeItem.artworkURL = URL(string: urlString)
+      }
+
+      storeItem.trackId = Int(historyItem.trackID)
+      storeItem.collectionId = Int(historyItem.collectionID)
+
+      return storeItem
+    }.reversed()
   }
 
   func deleteSearchHistory() {

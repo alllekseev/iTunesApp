@@ -94,7 +94,7 @@ final class DetailView: UIView {
     prepareUI()
 
     if let url = itemDetails.artworkURL {
-      itemImageView.loadImage(from: url as NSURL, item: itemDetails)
+      itemImageView.loadImage(from: url as NSURL)
     }
     nameLabel.text = itemDetails.name
     typeContentLabel.text = itemDetails.kind
