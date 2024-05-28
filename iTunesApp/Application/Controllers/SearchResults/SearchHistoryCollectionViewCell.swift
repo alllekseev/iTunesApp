@@ -8,6 +8,7 @@
 import UIKit
 
 final class SearchHistoryCollectionViewCell: UICollectionViewListCell {
+  
   static let reuseIdentifier = String(describing: SearchHistoryCollectionViewCell.self)
 
   private let labelsStackView: UIStackView = {

@@ -16,9 +16,7 @@ class NavigationController: UINavigationController {
 
 
   private func config() {
-    //    navigationBar.isTranslucent = false
-    let layout = UICollectionViewLayout()
-    let controllers = [MainCollectionViewController(collectionViewLayout: layout)]
+    let controllers = [MainCollectionViewController()]
 
     setViewControllers(controllers, animated: false)
   }
