@@ -44,7 +44,7 @@ final class SearchHistoryCollectionViewCell: UICollectionViewListCell {
 
   private let authorLable: UILabel = {
     let label = UILabel()
-    label.font = UIFont.systemFont(ofSize: 14, weight: .regular)
+    label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
     label.textColor = .textLight
     return label
   }()
@@ -87,13 +87,14 @@ extension SearchHistoryCollectionViewCell: PrepareView {
   
   func configureConstraints() {
     NSLayoutConstraint.activate([
+
+      cellImageView.topAnchor.constraint(equalTo: topAnchor, constant: 8),
+      cellImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+      cellImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8),
+//      cellImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
+      cellImageView.trailingAnchor.constraint(equalTo: labelsStackView.leadingAnchor, constant: -8),
       cellImageView.heightAnchor.constraint(equalToConstant: 60),
       cellImageView.widthAnchor.constraint(equalToConstant: 60),
-//      cellImageView.topAnchor.constraint(equalTo: topAnchor, constant: 8),
-      cellImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
-//      cellImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8),
-      cellImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
-      cellImageView.trailingAnchor.constraint(equalTo: labelsStackView.leadingAnchor, constant: -8),
 
       labelsStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
       labelsStackView.trailingAnchor.constraint(equalTo: detailButton.leadingAnchor, constant: -8),

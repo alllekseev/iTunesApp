@@ -14,7 +14,7 @@ extension SearchResultsCollectionViewController {
     let verticalSpacing: CGFloat = 0
     let horizontalSpacing: CGFloat = 4
 
-    var listConfiguration = UICollectionLayoutListConfiguration(appearance: .grouped)
+    var listConfiguration = UICollectionLayoutListConfiguration(appearance: .plain)
     listConfiguration.backgroundColor = .clear
 
     let layout = UICollectionViewCompositionalLayout { (sectionIndex, layoutEnvironment) -> NSCollectionLayoutSection? in
@@ -52,6 +52,7 @@ extension SearchResultsCollectionViewController {
         listConfiguration.itemSeparatorHandler = {
           (indexPath, sectionSeparatorConfiguration) in
           var configuration = sectionSeparatorConfiguration
+          configuration.topSeparatorInsets.leading = 0
           configuration.bottomSeparatorInsets.leading = 0
           return configuration
         }
