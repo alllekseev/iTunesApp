@@ -91,8 +91,8 @@ extension SearchHistoryCollectionViewCell: PrepareView {
       cellImageView.topAnchor.constraint(equalTo: topAnchor, constant: 8),
       cellImageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
       cellImageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -8),
-//      cellImageView.centerYAnchor.constraint(equalTo: centerYAnchor),
       cellImageView.trailingAnchor.constraint(equalTo: labelsStackView.leadingAnchor, constant: -8),
+
       cellImageView.heightAnchor.constraint(equalToConstant: 60),
       cellImageView.widthAnchor.constraint(equalToConstant: 60),
 

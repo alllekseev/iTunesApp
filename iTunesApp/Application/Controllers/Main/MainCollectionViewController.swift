@@ -28,6 +28,14 @@ final class MainCollectionViewController: UICollectionViewController {
     case info(message: String)
   }
 
+  // MARK: - Response Data
+
+  struct ResponseData {
+    var service: ServiceType
+    var mediaType: SearchScope
+    var elementsAmount: Int
+  }
+
   // MARK: - Collection View Properties
 
   private let coreDataManager = DataManager()
@@ -65,14 +73,14 @@ final class MainCollectionViewController: UICollectionViewController {
 
   var searchController: UISearchController
   var resultsController: SearchResultsCollectionViewController
-  var queryOptions = SearchScope.allCases.map{ $0.mediaType }
+  var queryOptions = SearchScope.allCases.map{ $0 }
 
   var textDidChange: ((String) -> Void)?
 
   lazy var responseData = ResponseData(
     service: .storeItems,
     mediaType: queryOptions[searchController.searchBar.selectedScopeButtonIndex],
-    elementsAmount: 10
+    elementsAmount: 50
   )
 
   // MARK: - Initializers

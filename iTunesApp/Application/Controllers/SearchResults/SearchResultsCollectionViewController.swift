@@ -77,8 +77,10 @@ final class SearchResultsCollectionViewController: UICollectionViewController {
 
   var dataSource: DataSource!
   var sections = [Section]()
+
   private var searchHistroyItems = [StoreItem]()
-  private var items = [SearchSuggestion]()
+  
+  var items = [SearchSuggestion]()
 
   var searchText: String = ""
   var onSearchTextChanged: ((String) -> Void)?
@@ -115,6 +117,11 @@ final class SearchResultsCollectionViewController: UICollectionViewController {
       forCellWithReuseIdentifier: SearchHistoryCollectionViewCell.reuseIdentifier
     )
 
+    collectionView.register(
+      SearchItemCollectionViewCell.self,
+      forCellWithReuseIdentifier: SearchItemCollectionViewCell.reuseIdentifier
+    )
+
     collectionView.register(UICollectionViewListCell.self, forCellWithReuseIdentifier: ID)
 
     collectionView.register(
@@ -128,14 +135,19 @@ final class SearchResultsCollectionViewController: UICollectionViewController {
 
   // MARK: - Override didSelectItem
 
-  override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+  override func collectionView(
+    _ collectionView: UICollectionView,
+    didSelectItemAt indexPath: IndexPath
+  ) {
     collectionView.deselectItem(at: indexPath, animated: true)
     let section = sections[indexPath.section]
     switch section {
     case .histroy:
       delegate?.showDetailView(for: searchHistroyItems[indexPath.item])
     case .results:
-      delegate?.selectItem(with: items[indexPath.row].name)
+      let cell = collectionView.cellForItem(at: indexPath) as! SearchItemCollectionViewCell
+      let text = cell.text
+      delegate?.selectItem(with: text.string)
     }
   }
 }
@@ -151,9 +163,10 @@ extension SearchResultsCollectionViewController: SearchRepositoryDelegate {
     case .loading: self.items = []
     case .loaded(let items):
       self.items = items.compactMap { $0 }
+      filterLoadedItems()
       snapshotManager = .results
     case .error:
-      items.append(SearchSuggestion(name: self.searchText))
+      items.append(SearchSuggestion(name: self.searchText, artist: self.searchText))
       snapshotManager = .results
     }
   }

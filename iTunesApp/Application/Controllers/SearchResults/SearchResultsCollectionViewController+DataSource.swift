@@ -25,24 +25,23 @@ extension SearchResultsCollectionViewController {
         return cell
       case .results(let resultsItem):
         let cell = collectionView.dequeueReusableCell(
-          withReuseIdentifier: self.ID,
+          withReuseIdentifier: SearchItemCollectionViewCell.reuseIdentifier,
           for: indexPath
-        ) as! UICollectionViewListCell
+        ) as! SearchItemCollectionViewCell
 
-        var contentConfiguration = cell.defaultContentConfiguration()
-        let imageConfiguration = UIImage.SymbolConfiguration(font: UIFont.systemFont(ofSize: 16))
-        contentConfiguration.image = UIImage(systemName: "magnifyingglass", withConfiguration: imageConfiguration)
-        contentConfiguration.imageProperties.tintColor = .systemGray
+        let searchText = self.searchText.trimmingCharacters(in: .whitespaces)
 
-        let resultText = resultsItem.name
-        contentConfiguration.textProperties.color = .systemGray
-        if let attributedText = self.attributedString(from: resultText) {
-          contentConfiguration.attributedText = attributedText
+        let text: NSAttributedString
+
+        if resultsItem.name.lowercased().contains(searchText.lowercased()) {
+          text = self.highlightMathces(in: resultsItem.name, searchString: searchText)
+        } else if resultsItem.artist.lowercased().contains(searchText.lowercased()) {
+          text = self.highlightMathces(in: resultsItem.artist, searchString: searchText)
         } else {
-          contentConfiguration.text = resultText
+          text = NSAttributedString(string: resultsItem.name)
         }
-
-        cell.contentConfiguration = contentConfiguration
+        
+        cell.configureCell(text)
         return cell
       }
     }
@@ -61,23 +60,20 @@ extension SearchResultsCollectionViewController {
 
       return headerView
     }
-
-//    updateSnapshot()
-//    dataSource.apply(itemsSnapshot)
   }
 
-  private func attributedString(from resultText: String) -> NSMutableAttributedString? {
-    guard let range = resultText.range(of: searchText, options: .caseInsensitive) else {
-      return nil
+  private func highlightMathces(in text: String, searchString: String) -> NSAttributedString {
+    let lowecasedText = text.lowercased()
+    let lowercasedSearchString = searchString.lowercased()
+
+    guard let range = lowecasedText.range(of: lowercasedSearchString) else {
+      return NSAttributedString(string: text)
     }
-    let attributedString = NSMutableAttributedString(string: resultText)
-    attributedString.addAttributes(
-      [
-        .font: UIFont.boldSystemFont(ofSize: 17),
-        .foregroundColor: UIColor.label
-      ],
-      range: NSRange(range, in: resultText)
-    )
-    return attributedString
+
+    let nsRange = NSRange(range, in: text)
+    let highlightedText = NSMutableAttributedString(string: text)
+    highlightedText.addAttribute(.foregroundColor, value: UIColor.label, range: nsRange)
+
+    return highlightedText
   }
 }

@@ -11,12 +11,6 @@ import UIKit
 
 extension MainCollectionViewController {
 
-  struct ResponseData {
-    var service: ServiceType
-    var mediaType: String
-    var elementsAmount: Int
-  }
-
   // MARK: - Setup SearchBar
 
   func setupSearchBar() {

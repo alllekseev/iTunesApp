@@ -8,7 +8,7 @@
 import Foundation
 
 struct QueryItems {
-  typealias SearchScope = String
+//  typealias SearchScope = String
 
   let term: String
   let mediaType: SearchScope
@@ -39,9 +39,11 @@ struct QueryItems {
   var queryItems: [URLQueryItem] {
     let queryItems = [
       "term": "\(searchTerm)",
-      "media": "\(mediaType)",
+      "media": "\(mediaType.mediaType)",
       "lang": language.rawValue,
-      "limit": "\(elementsAmount)"
+      "limit": "\(elementsAmount)",
+      "entity": "\(mediaType.entity)"
+
     ]
 
     return queryItems.map { URLQueryItem(name: $0.key, value: $0.value) }

@@ -49,13 +49,6 @@ extension SearchResultsCollectionViewController {
         section.boundarySupplementaryItems = [headerItem]
         return section
       case .results:
-        listConfiguration.itemSeparatorHandler = {
-          (indexPath, sectionSeparatorConfiguration) in
-          var configuration = sectionSeparatorConfiguration
-          configuration.topSeparatorInsets.leading = 0
-          configuration.bottomSeparatorInsets.leading = 0
-          return configuration
-        }
         return NSCollectionLayoutSection.list(using: listConfiguration, layoutEnvironment: layoutEnvironment)
       }
     }
