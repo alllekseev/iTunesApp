@@ -7,37 +7,96 @@
 
 import UIKit
 
-// TODO: create initializer
 final class MainCollectionViewController: UICollectionViewController {
 
-  // MARK: - Typealiases
+  // MARK: - Type Definitions
+  
+  typealias DataSource = UICollectionViewDiffableDataSource<Section, StoreItem>
+  typealias Snapshot = NSDiffableDataSourceSnapshot<Section, StoreItem>
 
-  typealias DataSource = UICollectionViewDiffableDataSource<String, StoreItem>
-  typealias Snapshot = NSDiffableDataSourceSnapshot<String, StoreItem>
+  // MARK: - Sections
 
-  // MARK: - Properties
+  enum Section {
+    case storeItems
+  }
 
-  var items = [StoreItem]()
+  // MARK: - Collection State Manager
+
+  private enum MainCollectionStateManager {
+    case loading
+    case loaded(items: [StoreItem])
+    case info(message: String)
+  }
+
+  // MARK: - Response Data
+
+  struct ResponseData {
+    var service: ServiceType
+    var mediaType: SearchScope
+    var elementsAmount: Int
+  }
+
+  // MARK: - Collection View Properties
+
+  private let coreDataManager = DataManager()
+
+  private var items = [StoreItem]()
+
   var dataSource: DataSource!
-
-  // MARK: - Class Instances
-
-  var resultSearchController = SearchController()
-  var searchRepository = SearchRepository()
-  var loadingIndicator = Loader().indicator
-  private lazy var errorView = ErrorView(frame: view.bounds)
-
-  // MARK: - Snapshot
-
-  var itemSnapshot: Snapshot {
+  
+  private var itemSnapshot: Snapshot {
     var snapshot = Snapshot()
-    snapshot.appendSections(["Results"])
+    snapshot.appendSections([.storeItems])
     snapshot.appendItems(items)
     return snapshot
   }
 
-  // FIXME: - add AsyncSequence
-  var imageLoadTask: [IndexPath: Task<Void, Never>] = [:]
+  private var collectionState: MainCollectionStateManager = .info(message: "Введите запрос") {
+    didSet {
+      updateUI()
+    }
+  }
+
+  // MARK: - Private Properties
+
+  // MARK: - Additional Views
+  private lazy var activityIndicator = ActivityIndicator(view: view, style: .large)
+  private lazy var errorView = ErrorView(frame: view.bounds)
+  
+
+  // MARK: - Network Properties
+  var searchRepository = SearchRepository()
+  var workItem: DispatchWorkItem?
+
+
+  // MARK: - SearchController
+
+  var searchController: UISearchController
+  var resultsController: SearchResultsCollectionViewController
+  var queryOptions = SearchScope.allCases.map{ $0 }
+
+  var textDidChange: ((String) -> Void)?
+
+  lazy var responseData = ResponseData(
+    service: .storeItems,
+    mediaType: queryOptions[searchController.searchBar.selectedScopeButtonIndex],
+    elementsAmount: 50
+  )
+
+  // MARK: - Initializers
+
+  init() {
+    resultsController = SearchResultsCollectionViewController(
+      searchRepository,
+      coreDataManager: coreDataManager
+    )
+    searchController = UISearchController(searchResultsController: resultsController)
+    super.init(collectionViewLayout: UICollectionViewLayout())
+  }
+
+  required init?(coder: NSCoder) {
+    fatalError("init(coder:) has not been implemented")
+  }
 
   // MARK: - viewDidLoad
 
@@ -49,112 +108,66 @@ final class MainCollectionViewController: UICollectionViewController {
       forCellWithReuseIdentifier: MainCollectionViewCell.ID
     )
 
+    setupSearchBar()
+    setupResultsController()
+    prepareUI()
     configureColectionView()
     configureDataSource()
-    prepareUI()
   }
+
+  private func prepareUI() {
+    collectionView.backgroundColor = .systemBackground
+    view.addSubview(errorView)
+  }
+
+  private func configureColectionView() {
+    navigationItem.searchController = searchController
+    navigationItem.hidesSearchBarWhenScrolling = false
+    collectionView.collectionViewLayout = configureLayout()
+    searchRepository.delegate = self
+  }
+
+  private func updateUI() {
+    switch collectionState {
+    case .loading:
+      errorView.isHidden = true
+      activityIndicator.showIndicator()
+      return
+    case .loaded(let items):
+      errorView.isHidden = true
+      self.items = items
+    case .info(let message):
+      errorView.isHidden = false
+      let errorContext = ErrorContext(message: message)
+      errorView.configureController(errorContext)
+    }
+    activityIndicator.hideIndicator()
+  }
+
+  // MARK: - Override Methods
 
   override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
     let vc = DetailViewController(itemDetails: items[indexPath.item])
+    coreDataManager.save(item: items[indexPath.item])
     navigationController?.pushViewController(vc, animated: true)
   }
 
-  // MARK: - Prepare UI
-
-  func prepareUI() {
-    collectionView.backgroundColor = .systemBackground
-
-    view.addSubview(loadingIndicator)
-    view.addSubview(errorView)
-
-    NSLayoutConstraint.activate([
-      loadingIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-      loadingIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-    ])
-  }
-
-  // MARK: - Configure CollectionView
-
-  func configureColectionView() {
-    navigationItem.searchController = resultSearchController
-//    resultSearchController.searchBar.delegate = self
-    navigationItem.hidesSearchBarWhenScrolling = false
-    collectionView.collectionViewLayout = configureLayout()
-    resultSearchController.searchRepository.delegate = self
-  }
-
-  // MARK: - Layout
-
-  func configureLayout() -> UICollectionViewLayout {
-    let sectionSpacing: CGFloat = 16
-    let innerSpacing: CGFloat = 14
-
-    let itemSize = NSCollectionLayoutSize(
-      widthDimension: .fractionalWidth(0.5),
-      heightDimension: .fractionalWidth(0.5)
-    )
-    let item = NSCollectionLayoutItem(layoutSize: itemSize)
-
-    let groupSize = NSCollectionLayoutSize(
-      widthDimension: .fractionalWidth(1),
-      heightDimension: .fractionalWidth(0.5)
-    )
-    let group = NSCollectionLayoutGroup.horizontal(
-      layoutSize: groupSize,
-      repeatingSubitem: item,
-      count: 2
-    )
-    group.interItemSpacing = NSCollectionLayoutSpacing.fixed(innerSpacing)
-
-    let section = NSCollectionLayoutSection(group: group)
-    section.contentInsets = NSDirectionalEdgeInsets(
-      top: sectionSpacing,
-      leading: sectionSpacing,
-      bottom: sectionSpacing,
-      trailing: sectionSpacing
-    )
-    section.interGroupSpacing = innerSpacing
-
-    return UICollectionViewCompositionalLayout(section: section)
-  }
-
-  // MARK: - Screen Management
-
-  private func showCollectionView(with items: [StoreItem]) {
-    errorView.isHidden = true
-    self.items = items
-  }
-
-  private func showLoadingView() {
-    errorView.isHidden = true
-    loadingIndicator.startAnimating()
-  }
-
-  private func showErrorView(with message: String) {
-    errorView.isHidden = false
-
-    let errorContext = ErrorContext(message: message)
-    errorView.configureController(errorContext)
-  }
+  // MARK: - Private Methods
 }
 
 extension MainCollectionViewController: SearchRepositoryDelegate {
 
   func update() {
     self.items = []
-    switch resultSearchController.searchRepository.storeStateManager.state {
+    switch searchRepository.storeStateManager.state {
     case .empty:
-      loadingIndicator.stopAnimating()
-      showErrorView(with: "Введи запрос")
+      collectionState = .info(message: "Введите запрос")
     case .loading:
-      showLoadingView()
-      dataSource.apply(itemSnapshot, animatingDifferences: true)
+      collectionState = .loading
     case .loaded(let items):
-      self.loadingIndicator.stopAnimating()
-      self.showCollectionView(with: items)
+      collectionState = .loaded(items: items)
     case .error(let error):
-      loadingIndicator.stopAnimating()
-      showErrorView(with: error.customDescription)
+      collectionState = .info(message: error.customDescription)
     }
     dataSource.apply(itemSnapshot, animatingDifferences: true)
   }
@@ -165,17 +178,6 @@ extension MainCollectionViewController: SearchRepositoryDelegate {
  func showContentsWebSite(with url: URL) {
          webViewController = SFSafariViewController(url: url)
          present(webViewController, animated: true, completion: nil)
-
-     }
- */
-
-// MARK: - open detail view
-/*
- func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
-         let musicItem = self.searchViewModel.searhResults[indexPath.row]
-
-         self.performSegue(withIdentifier: "PreviewMusic_Identifier", sender: musicItem)
 
      }
  */

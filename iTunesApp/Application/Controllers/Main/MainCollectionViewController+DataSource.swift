@@ -8,6 +8,7 @@
 import UIKit
 
 extension MainCollectionViewController {
+  
   func configureDataSource() {
     dataSource = DataSource(collectionView: collectionView) {
       (collectionView, indexPath, item) -> UICollectionViewCell? in
@@ -15,11 +16,7 @@ extension MainCollectionViewController {
         withReuseIdentifier: MainCollectionViewCell.ID,
         for: indexPath
       ) as! MainCollectionViewCell
-      self.imageLoadTask[indexPath]?.cancel()
-      self.imageLoadTask[indexPath] = Task {
-        try? await cell.configure(for: item)
-        self.imageLoadTask[indexPath] = nil
-      }
+      cell.configure(for: item)
       return cell
     }
   }

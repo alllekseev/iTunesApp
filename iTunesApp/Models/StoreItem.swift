@@ -8,21 +8,22 @@
 import Foundation
 
 struct StoreItem: Hashable, Identifiable {
+  
   let id = UUID()
   let name: String
   let artist: String
   let kind: String
   let description: String
-  let artworkURL: URL?
-  let trackId: Int?
-  let collectionId: Int?
+  var artworkURL: URL?
+  var trackId: Int?
+  var collectionId: Int?
 
   enum CodingKeys: String, CodingKey {
     case name = "trackName"
     case artist = "artistName"
     case kind
     case description = "longDescription"
-    case artworkURL = "artworkUrl100"
+    case artwork = "artworkUrl100"
     case trackId
     case collectionId
   }
@@ -32,18 +33,19 @@ struct StoreItem: Hashable, Identifiable {
     case collectionName = "collectionName"
   }
 
-  static var testItems: [StoreItem] {
-    guard let data = try? JSONDecoder().decode(SearchResponse<StoreItem>.self, from: testStoreItemsData) else {
-      return []
-    }
-    return data.results
+  init(name: String, artist: String, kind: String, description: String) {
+    self.name = name
+    self.artist = artist
+    self.kind = kind
+    self.description = description
   }
 
-  static var testItemDetail: StoreItem? {
-    guard let data = try? JSONDecoder().decode(StoreItem.self, from: testStoreItemDetail) else {
-      return nil
-    }
-    return data
+  func hash(into hasher: inout Hasher) {
+    hasher.combine(id)
+  }
+
+  static func == (lhs: StoreItem, rhs: StoreItem) -> Bool {
+    return lhs.id == rhs.id
   }
 }
 
@@ -52,9 +54,9 @@ extension StoreItem: Decodable {
     let container = try decoder.container(keyedBy: CodingKeys.self)
     artist = try container.decode(String.self, forKey: .artist)
     kind = (try? container.decode(String.self, forKey: .kind)) ?? ""
-    artworkURL = try? container.decode(URL.self, forKey: .artworkURL)
     trackId = try? container.decode(Int.self, forKey: .trackId)
     collectionId = try? container.decode(Int.self, forKey: .collectionId)
+    artworkURL = try? container.decode(URL.self, forKey: .artwork)
 
     let additionalContainer = try decoder.container(keyedBy: AdditionalKeys.self)
     name = (try? container.decode(String.self, forKey: .name))
@@ -62,5 +64,30 @@ extension StoreItem: Decodable {
     description = (try? container.decode(String.self, forKey: .description))
         ?? (try? additionalContainer.decode(String.self, forKey: .description))
         ?? ""
+  }
+}
+
+// MARK: - Testing Data
+extension StoreItem {
+  static var testItems: [StoreItem] {
+    guard let data = try? JSONDecoder().decode(SearchResponse<StoreItem>.self, from: testStoreItemsData) else {
+      return []
+    }
+    return data.results
+  }
+
+  static var testTwoItems: [StoreItem] {
+    guard let data = try? JSONDecoder().decode(SearchResponse<StoreItem>.self, from: testStoreItemsData) else {
+      return []
+    }
+    let countOfElements = min(2, data.results.count)
+    return Array(data.results[0..<countOfElements])
+  }
+
+  static var testItemDetail: StoreItem? {
+    guard let data = try? JSONDecoder().decode(StoreItem.self, from: testStoreItemDetail) else {
+      return nil
+    }
+    return data
   }
 }

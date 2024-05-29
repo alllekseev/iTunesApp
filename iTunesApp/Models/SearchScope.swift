@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum SearchScope: CaseIterable {
+enum SearchScope: Int, CaseIterable {
   case all, movies, music, apps, books
 
   var title: String {
@@ -31,6 +31,21 @@ enum SearchScope: CaseIterable {
     case .apps:
       return "software"
     case .books: return "ebook"
+    }
+  }
+
+  var entity: String {
+    switch self {
+    case .all:
+      return "movie, audiobook, tvSeason, allTrack"
+    case .movies:
+      return "movie"
+    case .music:
+      return "song"
+    case .apps:
+      return "software"
+    case .books:
+      return "ebook"
     }
   }
 }
