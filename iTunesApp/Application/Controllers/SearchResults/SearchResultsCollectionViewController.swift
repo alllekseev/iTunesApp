@@ -73,8 +73,6 @@ final class SearchResultsCollectionViewController: UICollectionViewController {
 
   // MARK: - Collection View Properties
 
-  let ID = "cell"
-
   var dataSource: DataSource!
   var sections = [Section]()
 
@@ -122,7 +120,7 @@ final class SearchResultsCollectionViewController: UICollectionViewController {
       forCellWithReuseIdentifier: SearchItemCollectionViewCell.reuseIdentifier
     )
 
-    collectionView.register(UICollectionViewListCell.self, forCellWithReuseIdentifier: ID)
+//    collectionView.register(UICollectionViewListCell.self, forCellWithReuseIdentifier: ID)
 
     collectionView.register(
       SectionHeaderView.self,

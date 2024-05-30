@@ -11,11 +11,14 @@ extension SearchResultsCollectionViewController {
 
   private func findMatches(searchString: String) -> NSCompoundPredicate {
 
+    let nameKey = "name"
+    let artistKey = "artist"
+
     var searchItemsPredicate = [NSPredicate]()
 
     let searchStringExpression = NSExpression(forConstantValue: searchString)
 
-    let nameExpression = NSExpression(forKeyPath: "name")
+    let nameExpression = NSExpression(forKeyPath: nameKey)
 
     let nameSearchComparisonPredicate = NSComparisonPredicate(
       leftExpression: nameExpression,
@@ -27,7 +30,7 @@ extension SearchResultsCollectionViewController {
 
     searchItemsPredicate.append(nameSearchComparisonPredicate)
 
-    let artistExpression = NSExpression(forKeyPath: "artist")
+    let artistExpression = NSExpression(forKeyPath: artistKey)
 
     let artistComparisonPredicate = NSComparisonPredicate(
       leftExpression: artistExpression,

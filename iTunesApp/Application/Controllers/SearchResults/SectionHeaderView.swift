@@ -28,13 +28,13 @@ final class SectionHeaderView: UICollectionReusableView {
     let label = UILabel()
     label.font = UIFont.systemFont(ofSize: 16, weight: .semibold)
     label.textColor = .text
-    label.text = "Resently Searched"
+    label.text = Strings.historyBlockHeader
     return label
   }()
 
   private lazy var resetButton: UIButton = {
     let button = UIButton()
-    button.setTitle("Clear", for: .normal)
+    button.setTitle(Strings.clearBittonTitle, for: .normal)
     button.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
     button.setTitleColor(.systemBlue, for: .normal)
     button.addTarget(self, action: #selector(tappedClearHistory), for: .touchUpInside)

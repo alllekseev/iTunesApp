@@ -12,11 +12,11 @@ enum SearchScope: Int, CaseIterable {
 
   var title: String {
     switch self {
-    case .all: return "All"
-    case .movies: return "Movies"
-    case .music: return "Music"
-    case .apps: return "Apps"
-    case .books: return "Books"
+    case .all: return String(localized: "Все")
+    case .movies: return String(localized: "Фильмы")
+    case .music: return String(localized: "Музыка")
+    case .apps: return String(localized: "Приложения")
+    case .books: return String(localized: "Книги")
     }
   }
 
