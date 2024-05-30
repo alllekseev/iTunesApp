@@ -19,19 +19,19 @@ enum APIError: Error, LocalizedError {
   var customDescription: String {
     switch self {
     case .invalidData:
-      return "Invalid data"
+      return ErrorMessageText.invalidData
     case .jsonParsingFailure:
-      return "Failed to parse JSON"
+      return ErrorMessageText.jsonParsingFailure
     case .requestFailed(let description):
-      return "Request failed: \(description)"
+      return "\(ErrorMessageText.requestFailed): \(description)"
     case .invalidStatusCode(let statusCode):
-      return "Invalid status code: \(statusCode)"
+      return "\(ErrorMessageText.invalidStatusCode): \(statusCode)"
     case .unknownError(let error):
-      return "An unknown error occured \(error.localizedDescription)"
+      return "\(ErrorMessageText.unknownError) \(error.localizedDescription)"
     case .itemsNotFound:
-      return "Items not found"
+      return ErrorMessageText.itemsNotFound
     case .notValidURL:
-      return "Check URL"
+      return ErrorMessageText.notValidURL
     }
   }
 }

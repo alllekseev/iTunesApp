@@ -51,7 +51,7 @@ final class MainCollectionViewController: UICollectionViewController {
     return snapshot
   }
 
-  private var collectionState: MainCollectionStateManager = .info(message: "Введите запрос") {
+  private var collectionState: MainCollectionStateManager = .loading {
     didSet {
       updateUI()
     }
@@ -161,7 +161,7 @@ extension MainCollectionViewController: SearchRepositoryDelegate {
     self.items = []
     switch searchRepository.storeStateManager.state {
     case .empty:
-      collectionState = .info(message: "Введите запрос")
+      collectionState = .info(message: Strings.placeholder)
     case .loading:
       collectionState = .loading
     case .loaded(let items):

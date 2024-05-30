@@ -15,10 +15,7 @@ extension MainCollectionViewController {
 
   func setupSearchBar() {
     searchController.searchBar.delegate = self
-    searchController.searchBar.placeholder = NSLocalizedString(
-      "Type you request",
-      comment: "Search placeholder for search bar"
-    )
+    searchController.searchBar.placeholder = Strings.placeholder
     searchController.searchBar.showsScopeBar = true
     searchController.searchBar.autocapitalizationType = .none
     searchController.searchBar.scopeButtonTitles = SearchScope.allCases.map { $0.title }

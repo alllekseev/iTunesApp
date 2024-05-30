@@ -101,7 +101,7 @@ final class DetailView: UIView {
     authorNameLabel.text = itemDetails.artist
 
     if !itemDetails.description.isEmpty {
-      descriptionHeaderLabel.text = NSLocalizedString("Описание", comment: "header for detail block of items")
+      descriptionHeaderLabel.text = Strings.descriptionBlock
       descriptionTextLabel.text = itemDetails.description
     }
   }
