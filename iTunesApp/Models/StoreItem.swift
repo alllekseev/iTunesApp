@@ -17,7 +17,9 @@ struct StoreItem: Hashable, Identifiable {
   var artworkURL: URL?
   var trackId: Int?
   var collectionId: Int?
+  var artistURL: URL?
 
+  /*artistViewUrl*/
   enum CodingKeys: String, CodingKey {
     case name = "trackName"
     case artist = "artistName"
@@ -26,11 +28,13 @@ struct StoreItem: Hashable, Identifiable {
     case artwork = "artworkUrl100"
     case trackId
     case collectionId
+    case artistViewUrl
   }
 
   enum AdditionalKeys: String, CodingKey {
     case description = "shortDescription"
     case collectionName = "collectionName"
+    case collectionArtistViewUrl
   }
 
   init(name: String, artist: String, kind: String, description: String) {
@@ -64,10 +68,13 @@ extension StoreItem: Decodable {
     description = (try? container.decode(String.self, forKey: .description))
         ?? (try? additionalContainer.decode(String.self, forKey: .description))
         ?? ""
+    artistURL = (try? container.decode(URL.self, forKey: .artistViewUrl))
+      ?? (try? additionalContainer.decode(URL.self, forKey: .collectionArtistViewUrl))
   }
 }
 
 // MARK: - Testing Data
+
 extension StoreItem {
   static var testItems: [StoreItem] {
     guard let data = try? JSONDecoder().decode(SearchResponse<StoreItem>.self, from: testStoreItemsData) else {

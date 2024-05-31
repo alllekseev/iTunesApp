@@ -172,12 +172,3 @@ extension MainCollectionViewController: SearchRepositoryDelegate {
     dataSource.apply(itemSnapshot, animatingDifferences: true)
   }
 }
-
-// MARK: - WebView
-/*
- func showContentsWebSite(with url: URL) {
-         webViewController = SFSafariViewController(url: url)
-         present(webViewController, animated: true, completion: nil)
-
-     }
- */

@@ -6,10 +6,11 @@
 //
 
 import UIKit
+import SafariServices
 
 final class DetailViewController: UIViewController {
 
-  private var itemDetails: StoreItem
+  fileprivate var itemDetails: StoreItem
   private var image: UIImage?
 
   var imageTask: Task<Void, Never>?
@@ -17,7 +18,7 @@ final class DetailViewController: UIViewController {
 
   init(itemDetails: StoreItem) {
     self.itemDetails = itemDetails
-    self.detailView = DetailView(itemDetails: itemDetails)
+    self.detailView = DetailView()
     super.init(nibName: nil, bundle: nil)
   }
   
@@ -29,12 +30,17 @@ final class DetailViewController: UIViewController {
     super.viewDidLoad()
     prepareUI()
     detailView.delegate = self
+
+    detailView.configure(for: itemDetails)
   }
 }
 
 extension DetailViewController: OpenLinkDelegate {
-  func openLink() {
-    
+  func openLink(with url: URL?) {
+    if let url {
+      let webViewController = SFSafariViewController(url: url)
+      present(webViewController, animated: true, completion: nil)
+    }
   }
 }
 
