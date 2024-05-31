@@ -8,5 +8,5 @@
 import Foundation
 
 protocol OpenLinkDelegate: AnyObject {
-  func openLink()
+  func openLink(with url: URL?)
 }

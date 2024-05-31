@@ -26,6 +26,7 @@ final class DataManager {
     newItem.kind = item.kind
     newItem.brief = item.description
     newItem.artworkURL = item.artworkURL?.absoluteString
+    newItem.artistURL = item.artistURL?.absoluteString
 
     if let trackID = item.trackId {
       newItem.trackID = Int64(trackID)
@@ -60,6 +61,9 @@ final class DataManager {
 
       if let urlString = historyItem.artworkURL {
         storeItem.artworkURL = URL(string: urlString)
+      }
+      if let artistURL = historyItem.artistURL {
+        storeItem.artistURL = URL(string: artistURL)
       }
 
       storeItem.trackId = Int(historyItem.trackID)

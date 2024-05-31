@@ -12,6 +12,11 @@ import UIKit
 final class DetailView: UIView {
 
   weak var delegate: OpenLinkDelegate?
+  private var artistURL: URL? {
+    didSet {
+      authorLinkButton.isHidden = (artistURL == nil)
+    }
+  }
 
   private var scrollView = UIScrollView()
 
@@ -89,29 +94,35 @@ final class DetailView: UIView {
     return label
   }()
 
-  init(itemDetails: StoreItem) {
-    super.init(frame: .zero)
+  override init(frame: CGRect) {
+    super.init(frame: frame)
     prepareUI()
-
-    if let url = itemDetails.artworkURL {
-      itemImageView.loadImage(from: url as NSURL)
-    }
-    nameLabel.text = itemDetails.name
-    typeContentLabel.text = itemDetails.kind
-    authorNameLabel.text = itemDetails.artist
-
-    if !itemDetails.description.isEmpty {
-      descriptionHeaderLabel.text = Strings.descriptionBlock
-      descriptionTextLabel.text = itemDetails.description
-    }
   }
   
   required init?(coder: NSCoder) {
     fatalError("init(coder:) has not been implemented")
   }
 
+  func configure(for item: StoreItem) {
+    if let url = item.artworkURL {
+      itemImageView.loadImage(from: url as NSURL)
+    }
+    nameLabel.text = item.name
+    typeContentLabel.text = item.kind
+    authorNameLabel.text = item.artist
+
+    artistURL = item.artistURL
+
+    if !item.description.isEmpty {
+      descriptionHeaderLabel.text = Strings.descriptionBlock
+      descriptionTextLabel.text = item.description
+    }
+  }
+
   @objc func authorLinkTapped() {
-    delegate?.openLink()
+    if !authorLinkButton.isHidden {
+      delegate?.openLink(with: artistURL)
+    }
   }
 }
 
@@ -127,6 +138,7 @@ extension DetailView: PrepareView {
     nameStackView.addArrangedSubview(typeContentLabel)
 
     authorStackView.addArrangedSubview(authorNameLabel)
+
     authorStackView.addArrangedSubview(authorLinkButton)
 
     descriptionStackView.addArrangedSubview(descriptionHeaderLabel)

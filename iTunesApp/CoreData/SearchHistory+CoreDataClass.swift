@@ -23,4 +23,5 @@ public class SearchHistory: NSManagedObject, Identifiable {
   @NSManaged public var artworkURL: String?
   @NSManaged public var trackID: Int64
   @NSManaged public var collectionID: Int64
+  @NSManaged public var artistURL: String?
 }
